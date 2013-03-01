@@ -22,9 +22,9 @@
 
 package org.jboss.as.xts;
 
+import org.jboss.logging.Messages;
 import org.jboss.logging.annotations.Message;
 import org.jboss.logging.annotations.MessageBundle;
-import org.jboss.logging.Messages;
 import org.jboss.msc.service.StartException;
 
 /**
@@ -71,5 +71,21 @@ public interface XtsAsMessages {
      */
     @Message(id = 18403, value = "Service not started")
     IllegalStateException xtsServiceIsNotStarted();
+
+    /**
+     * Creates an exception indicating that configuration service is not available.
+     *
+     * @return a {@link IllegalStateException} for the error.
+     */
+    @Message(id = 18404, value = "Configuration service is not available")
+    IllegalStateException configurationServiceUnavailable();
+
+    /**
+     * Creates an exception indicating that common configuration is not available.
+     *
+     * @return a {@link IllegalStateException} for the error.
+     */
+    @Message(id = 18405, value = "Common configuration is not available")
+    IllegalStateException commonConfigurationUnavailable();
 
 }
