@@ -22,6 +22,9 @@
 
 package org.jboss.as.xts;
 
+import static org.jboss.as.xts.XTSSubsystemDefinition.DEFAULT_CONTEXT_PROPAGATION;
+import static org.jboss.as.xts.XTSSubsystemDefinition.ENVIRONMENT_URL;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +49,6 @@ import org.jboss.msc.service.ServiceController.Mode;
 import org.jboss.msc.service.ServiceTarget;
 import org.jboss.wsf.spi.management.ServerConfig;
 import org.jboss.wsf.spi.publish.Context;
-
-import static org.jboss.as.xts.XTSSubsystemDefinition.ENVIRONMENT_URL;
 
 
 /**
@@ -105,12 +106,12 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
      */
     private static final ContextInfo[] contextDefinitions = {
             new ContextInfo("ws-c11",
-                    new EndpointInfo[]{
+                    new EndpointInfo[] {
                             new EndpointInfo("com.arjuna.webservices11.wscoor.sei.ActivationPortTypeImpl", "ActivationService"),
                             new EndpointInfo("com.arjuna.webservices11.wscoor.sei.RegistrationPortTypeImpl", "RegistrationService")
-                    }),
+                            }),
             new ContextInfo("ws-t11-coordinator",
-                    new EndpointInfo[]{
+                    new EndpointInfo[] {
                             new EndpointInfo("com.arjuna.webservices11.wsat.sei.CoordinatorPortTypeImpl", "CoordinatorService"),
                             new EndpointInfo("com.arjuna.webservices11.wsat.sei.CompletionCoordinatorPortTypeImpl", "CompletionCoordinatorService"),
                             new EndpointInfo("com.arjuna.webservices11.wsat.sei.CompletionCoordinatorRPCPortTypeImpl", "CompletionCoordinatorRPCService"),
@@ -118,19 +119,19 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
                             new EndpointInfo("com.arjuna.webservices11.wsba.sei.BusinessAgreementWithParticipantCompletionCoordinatorPortTypeImpl", "BusinessAgreementWithParticipantCompletionCoordinatorService"),
                             new EndpointInfo("com.arjuna.webservices11.wsarjtx.sei.TerminationCoordinatorPortTypeImpl", "TerminationCoordinatorService"),
                             new EndpointInfo("com.arjuna.webservices11.wsarjtx.sei.TerminationCoordinatorRPCPortTypeImpl", "TerminationCoordinatorRPCService")
-                    }),
+                     }),
             new ContextInfo("ws-t11-participant",
-                    new EndpointInfo[]{
+                    new EndpointInfo[] {
                             new EndpointInfo("com.arjuna.webservices11.wsat.sei.ParticipantPortTypeImpl", "ParticipantService"),
                             new EndpointInfo("com.arjuna.webservices11.wsba.sei.BusinessAgreementWithCoordinatorCompletionParticipantPortTypeImpl", "BusinessAgreementWithCoordinatorCompletionParticipantService"),
                             new EndpointInfo("com.arjuna.webservices11.wsba.sei.BusinessAgreementWithParticipantCompletionParticipantPortTypeImpl", "BusinessAgreementWithParticipantCompletionParticipantService"),
-                    }),
+                            }),
             new ContextInfo("ws-t11-client",
-                    new EndpointInfo[]{
+                    new EndpointInfo[] {
                             new EndpointInfo("com.arjuna.webservices11.wsat.sei.CompletionInitiatorPortTypeImpl", "CompletionInitiatorService"),
                             new EndpointInfo("com.arjuna.webservices11.wsarjtx.sei.TerminationParticipantPortTypeImpl", "TerminationParticipantService")
-                    })
-    };
+                            })
+            };
 
     /**
      * the hsot name used when deploying endpoints for the local host via the endpoint publisher service
@@ -149,6 +150,7 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
     @Override
     protected void populateModel(ModelNode operation, ModelNode model) throws OperationFailedException {
         ENVIRONMENT_URL.validateAndSet(operation, model);
+        DEFAULT_CONTEXT_PROPAGATION.validateAndSet(operation, model);
     }
 
 
@@ -160,6 +162,9 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
             XtsAsLogger.ROOT_LOGGER.debugf("nodeIdentifier=%s\n", coordinatorURL);
         }
 
+        final boolean isDefaultContextPropagation = model.hasDefined(CommonAttributes.DEFAULT_CONTEXT_PROPAGATION)
+                ? model.get(CommonAttributes.DEFAULT_CONTEXT_PROPAGATION).asBoolean() : false;
+
         context.addStep(new AbstractDeploymentChainStep() {
             protected void execute(DeploymentProcessorTarget processorTarget) {
                 processorTarget.addDeploymentProcessor(XTSExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_XTS_COMPONENT_INTERCEPTORS, new XTSInterceptorDeploymentProcessor());
@@ -167,6 +172,7 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 processorTarget.addDeploymentProcessor(XTSExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_MODULE_WELD_PORTABLE_EXTENSIONS + 10, new CDIExtensionProcessor());
             }
         }, OperationContext.Stage.RUNTIME);
+
 
         final ServiceTarget target = context.getServiceTarget();
 
@@ -201,7 +207,7 @@ class XTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
 
         // add an XTS service which depends on all the WS endpoints
 
-        final XTSManagerService xtsService = new XTSManagerService(coordinatorURL);
+        final XTSManagerService xtsService = new XTSManagerService(coordinatorURL, isDefaultContextPropagation);
 
         // this service needs to depend on the transaction recovery service
         // because it can only initialise XTS recovery once the transaction recovery

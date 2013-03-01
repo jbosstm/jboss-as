@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2011, Red Hat, Inc., and individual contributors
+ * Copyright 2013, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -20,14 +20,27 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.jboss.as.xts;
+package org.jboss.as.xts.jandex;
+
+import org.jboss.as.server.deployment.DeploymentUnit;
+import org.jboss.as.xts.XTSException;
+import org.jboss.jandex.AnnotationInstance;
 
 /**
- * @author <a href="mailto:adinn@redhat.com">Andrew Dinn</a>
+ * @author paul.robinson@redhat.com, 2012-02-06
  */
-interface CommonAttributes {
+public class RESTATAnnotation {
 
-    String XTS_ENVIRONMENT= "xts-environment";
-    String DEFAULT_CONTEXT_PROPAGATION = "default-context-propagation";
-    // TODO, many more!
+    private static final String RESTAT_ANNOTATION = "org.jboss.narayana.txframework.api.annotation.transaction.RESTAT";
+
+
+    public static RESTATAnnotation build(DeploymentUnit unit, String endpoint) throws XTSException {
+
+        final AnnotationInstance annotationInstance = JandexHelper.getAnnotation(unit, endpoint, RESTAT_ANNOTATION);
+        if (annotationInstance == null) {
+            return null;
+        }
+
+        return new RESTATAnnotation();
+    }
 }
