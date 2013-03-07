@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.msc.service.ServiceContainer;
-import org.jboss.msc.service.ServiceController;
-import org.jboss.msc.service.ServiceName;
 import org.jboss.wsf.spi.management.ServerConfig;
 import org.jboss.wsf.spi.metadata.config.CommonConfig;
 import org.jboss.wsf.spi.metadata.j2ee.serviceref.UnifiedHandlerChainMetaData;
@@ -53,11 +50,11 @@ public final class XTSHandlersManager {
      */
     private static final String BRIDGE_DISABLED_HANDLER_CLASS = "org.jboss.jbossts.txbridge.outbound.DisabledJTAOverWSATHandler";
 
-    private final ServiceContainer serviceContainer;
+    private final ServerConfig serverConfig;
 
 
-    public XTSHandlersManager(ServiceContainer serviceContainer) {
-        this.serviceContainer = serviceContainer;
+    public XTSHandlersManager(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
     }
 
     /**
@@ -178,29 +175,11 @@ public final class XTSHandlersManager {
      * @return
      */
     private Collection<? extends CommonConfig> getCommonConfigs(final String configType) {
-        final ServerConfig serverConfig = getServerConfig();
-
         if (CLIENT_CONFIG_TYPE.equals(configType)) {
             return serverConfig.getClientConfigs();
         } else {
             return Collections.emptyList();
         }
-    }
-
-    /**
-     *
-     * @return
-     * @throws IllegalStateException
-     */
-    private ServerConfig getServerConfig() {
-        final ServiceController<?> configService = serviceContainer.getService(
-                ServiceName.JBOSS.append("ws").append("config"));
-
-        if (configService == null) {
-            throw XtsAsMessages.MESSAGES.configurationServiceUnavailable();
-        }
-
-        return (ServerConfig) configService.getValue();
     }
 
 }
