@@ -85,12 +85,12 @@ public class XTSManagerService extends AbstractService<XTSService> {
             }
 
             xtsService = service;
+
+            XTSHandlersManager xtsHandlerManager = new XTSHandlersManager(serverConfigValue);
+            xtsHandlerManager.registerClientHandlers(isDefaultContextPropagation);
         } finally {
             SecurityActions.setContextLoader(null);
         }
-
-        XTSHandlersManager xtsHandlerManager = new XTSHandlersManager(context.getController().getServiceContainer());
-        xtsHandlerManager.registerClientHandlers(isDefaultContextPropagation);
     }
 
     public synchronized void stop(final StopContext context) {
