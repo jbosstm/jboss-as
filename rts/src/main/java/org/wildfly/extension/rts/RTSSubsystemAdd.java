@@ -12,6 +12,7 @@ import org.jboss.msc.service.ServiceController;
 import org.wildfly.extension.rts.logging.RTSLogger;
 import org.wildfly.extension.rts.service.CoordinatorService;
 import org.wildfly.extension.rts.service.ParticipantService;
+import org.wildfly.extension.undertow.Host;
 import org.wildfly.extension.undertow.UndertowService;
 
 /**
@@ -22,6 +23,10 @@ import org.wildfly.extension.undertow.UndertowService;
 final class RTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
 
     static final RTSSubsystemAdd INSTANCE = new RTSSubsystemAdd();
+
+    private static final String DEFAULT_SERVER_NAME = "default-server";
+
+    private static final String DEFAULT_HOST_NAME = "default-host";
 
     private RTSSubsystemAdd() {
     }
@@ -50,12 +55,14 @@ final class RTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
         final ServiceBuilder<CoordinatorService> coordinatorServiceBuilder = context
                 .getServiceTarget()
                 .addService(RTSSubsystemExtension.COORDINATOR, coordinatorService)
-                .addDependency(UndertowService.UNDERTOW, UndertowService.class, coordinatorService.getInjectedUndertowService());
+                .addDependency(UndertowService.virtualHostName(DEFAULT_SERVER_NAME, DEFAULT_HOST_NAME), Host.class,
+                        coordinatorService.getInjectedHost());
 
         final ServiceBuilder<ParticipantService> participantServiceBuilder = context
                 .getServiceTarget()
                 .addService(RTSSubsystemExtension.PARTICIPANT, participantService)
-                .addDependency(UndertowService.UNDERTOW, UndertowService.class, participantService.getInjectedUndertowService());
+                .addDependency(UndertowService.virtualHostName(DEFAULT_SERVER_NAME, DEFAULT_HOST_NAME), Host.class,
+                        participantService.getInjectedHost());
 
         coordinatorServiceBuilder.setInitialMode(ServiceController.Mode.ACTIVE);
         participantServiceBuilder.setInitialMode(ServiceController.Mode.ACTIVE);
