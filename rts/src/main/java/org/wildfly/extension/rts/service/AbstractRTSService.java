@@ -16,10 +16,7 @@ import org.jboss.msc.value.InjectedValue;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 import org.wildfly.extension.rts.logging.RTSLogger;
-import org.wildfly.extension.rts.logging.RTSMessages;
 import org.wildfly.extension.undertow.Host;
-import org.wildfly.extension.undertow.Server;
-import org.wildfly.extension.undertow.UndertowService;
 
 /**
  *
@@ -28,18 +25,10 @@ import org.wildfly.extension.undertow.UndertowService;
  */
 public class AbstractRTSService {
 
-    private static final String DEFAULT_SERVER_NAME = "default-server";
+    private InjectedValue<Host> injectedHost = new InjectedValue<>();
 
-    private static final String DEFAULT_HOST_NAME = "default-host";
-
-    private InjectedValue<UndertowService> injectedUndertowService = new InjectedValue<>();
-
-    private Host defaulthost;
-
-    private Server defaultServer;
-
-    public InjectedValue<UndertowService> getInjectedUndertowService() {
-        return injectedUndertowService;
+    public InjectedValue<Host> getInjectedHost() {
+        return injectedHost;
     }
 
     protected DeploymentInfo getDeploymentInfo(final String name, final String contextPath, final Map<String, String> initialParameters) {
@@ -64,7 +53,7 @@ public class AbstractRTSService {
         manager.deploy();
 
         try {
-            getHost().registerDeployment(deploymentInfo, manager.start());
+            injectedHost.getValue().registerDeployment(deploymentInfo, manager.start());
         } catch (ServletException e) {
             RTSLogger.ROOT_LOGGER.warn(e.getMessage(), e);
         }
@@ -72,48 +61,8 @@ public class AbstractRTSService {
 
     protected void undeployServlet(final DeploymentInfo deploymentInfo) {
         if (deploymentInfo != null) {
-            getHost().unregisterDeployment(deploymentInfo);
+            injectedHost.getValue().unregisterDeployment(deploymentInfo);
         }
-    }
-
-    private Host getHost() {
-        if (defaulthost != null) {
-            return defaulthost;
-        }
-
-        final Server defaultServer = getServer();
-
-        for (Host host : defaultServer.getHosts()) {
-            if (host.getName().equals(DEFAULT_HOST_NAME)) {
-                defaulthost = host;
-                break;
-            }
-        }
-
-        if (defaulthost == null) {
-            throw RTSMessages.MESSAGES.defaultUndertowHostNotAvailable();
-        }
-
-        return defaulthost;
-    }
-
-    private Server getServer() {
-        if (defaultServer != null) {
-            return defaultServer;
-        }
-
-        for (Server server : injectedUndertowService.getValue().getServers()) {
-            if (server.getName().equals(DEFAULT_SERVER_NAME)) {
-                defaultServer = server;
-                break;
-            }
-        }
-
-        if (defaultServer == null) {
-            throw RTSMessages.MESSAGES.defaultUndertowServerNotAvailable();
-        }
-
-        return defaultServer;
     }
 
     private ServletInfo getResteasyServlet() {
