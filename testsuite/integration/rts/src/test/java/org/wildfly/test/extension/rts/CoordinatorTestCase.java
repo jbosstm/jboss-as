@@ -75,7 +75,7 @@ public final class CoordinatorTestCase {
     @Test
     public void test1PCAbort() throws Exception {
         TxSupport txn = new TxSupport();
-        String pUrl = Constants.WORKING_PARTICIPANT_URL;
+        String pUrl = Constants.RESTFUL_PARTICIPANT_URL;
         String pid = null;
         String pVal;
 
@@ -99,7 +99,7 @@ public final class CoordinatorTestCase {
     @Test
     public void test1PCCommit() throws Exception {
         TxSupport txn = new TxSupport();
-        String pUrl = Constants.WORKING_PARTICIPANT_URL;
+        String pUrl = Constants.RESTFUL_PARTICIPANT_URL;
         String pid = null;
         String pVal;
 
@@ -123,7 +123,7 @@ public final class CoordinatorTestCase {
     @Test
     public void test2PC() throws Exception {
         TxSupport txn = new TxSupport();
-        String pUrl = Constants.WORKING_PARTICIPANT_URL;
+        String pUrl = Constants.RESTFUL_PARTICIPANT_URL;
         String[] pid = new String[2];
         String[] pVal = new String[2];
 
@@ -171,7 +171,7 @@ public final class CoordinatorTestCase {
         TxSupport txn = new TxSupport();
         int txnCount = txn.txCount();
         txn.startTx(1000);
-        txn.enlistTestResource(Constants.WORKING_PARTICIPANT_URL, false);
+        txn.enlistTestResource(Constants.RESTFUL_PARTICIPANT_URL, false);
 
         // Let the txn timeout
         Thread.sleep(2000);

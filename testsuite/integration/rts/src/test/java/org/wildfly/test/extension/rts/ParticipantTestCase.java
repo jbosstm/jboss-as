@@ -1,6 +1,7 @@
 package org.wildfly.test.extension.rts;
 
 import java.io.File;
+import java.lang.String;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,10 +25,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.wildfly.test.extension.rts.common.Constants;
 import org.wildfly.test.extension.rts.common.LoggingParticipant;
-
-import com.arjuna.ats.arjuna.common.Uid;
 
 /**
  *
@@ -36,6 +36,8 @@ import com.arjuna.ats.arjuna.common.Uid;
  */
 @RunWith(Arquillian.class)
 public final class ParticipantTestCase {
+
+    private static final String APPLICATION_ID = "org.wildfly.test.extension.rts";
 
     private static final String DEPENDENCIES = "Dependencies: org.jboss.narayana.rts\n";
 
@@ -69,8 +71,10 @@ public final class ParticipantTestCase {
         LoggingParticipant participant1 = new LoggingParticipant(new Prepared());
         LoggingParticipant participant2 = new LoggingParticipant(new Prepared());
 
-        ParticipantsManagerFactory.getInstance().enlist(txSupport, participant1);
-        ParticipantsManagerFactory.getInstance().enlist(txSupport, participant2);
+        ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, txSupport.getDurableParticipantEnlistmentURI(),
+                participant1);
+        ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, txSupport.getDurableParticipantEnlistmentURI(),
+                participant2);
 
         txSupport.commitTx();
 
@@ -84,7 +88,8 @@ public final class ParticipantTestCase {
 
         LoggingParticipant participant = new LoggingParticipant(new Prepared());
 
-        ParticipantsManagerFactory.getInstance().enlist(txSupport, participant);
+        ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, txSupport.getDurableParticipantEnlistmentURI(),
+                participant);
 
         txSupport.commitTx();
 
@@ -100,7 +105,8 @@ public final class ParticipantTestCase {
                 new LoggingParticipant(new Prepared()) });
 
         for (LoggingParticipant p : participants) {
-            ParticipantsManagerFactory.getInstance().enlist(txSupport, p);
+            ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID,
+                    txSupport.getDurableParticipantEnlistmentURI(), p);
         }
 
         txSupport.commitTx();
@@ -125,8 +131,10 @@ public final class ParticipantTestCase {
         LoggingParticipant participant1 = new LoggingParticipant(new Prepared());
         LoggingParticipant participant2 = new LoggingParticipant(new Prepared());
 
-        ParticipantsManagerFactory.getInstance().enlist(txSupport, participant1);
-        ParticipantsManagerFactory.getInstance().enlist(txSupport, participant2);
+        ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, txSupport.getDurableParticipantEnlistmentURI(),
+                participant1);
+        ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, txSupport.getDurableParticipantEnlistmentURI(),
+                participant2);
 
         txSupport.rollbackTx();
 
@@ -142,7 +150,8 @@ public final class ParticipantTestCase {
                 new LoggingParticipant(new Aborted()), new LoggingParticipant(new Aborted()), });
 
         for (LoggingParticipant p : participants) {
-            ParticipantsManagerFactory.getInstance().enlist(txSupport, p);
+            ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID,
+                    txSupport.getDurableParticipantEnlistmentURI(), p);
         }
 
         txSupport.commitTx();
@@ -166,10 +175,11 @@ public final class ParticipantTestCase {
         final List<LoggingParticipant> participants = Arrays.asList(new LoggingParticipant[] {
                 new LoggingParticipant(new Prepared()), new LoggingParticipant(new Prepared()) });
 
-        Uid lastParticipantid = null;
+        String lastParticipantid = null;
 
         for (LoggingParticipant p : participants) {
-            lastParticipantid = ParticipantsManagerFactory.getInstance().enlist(txSupport, p);
+            lastParticipantid = ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID,
+                    txSupport.getDurableParticipantEnlistmentURI(), p);
         }
 
         ParticipantsManagerFactory.getInstance().reportHeuristic(lastParticipantid, HeuristicType.HEURISTIC_ROLLBACK);
@@ -192,10 +202,11 @@ public final class ParticipantTestCase {
         final List<LoggingParticipant> participants = Arrays.asList(new LoggingParticipant[] {
                 new LoggingParticipant(new Prepared()), new LoggingParticipant(new Prepared()) });
 
-        Uid lastParticipantid = null;
+        String lastParticipantid = null;
 
         for (LoggingParticipant p : participants) {
-            lastParticipantid = ParticipantsManagerFactory.getInstance().enlist(txSupport, p);
+            lastParticipantid = ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID,
+                    txSupport.getDurableParticipantEnlistmentURI(), p);
         }
 
         ParticipantsManagerFactory.getInstance().reportHeuristic(lastParticipantid, HeuristicType.HEURISTIC_COMMIT);
