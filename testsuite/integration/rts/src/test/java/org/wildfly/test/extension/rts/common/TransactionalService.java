@@ -18,7 +18,7 @@ import org.jboss.narayana.rest.integration.api.Prepared;
 import org.jboss.narayana.rest.integration.api.ReadOnly;
 import org.jboss.narayana.rest.integration.api.Vote;
 
-import com.arjuna.ats.arjuna.common.Uid;
+import java.lang.String;
 
 /**
  *
@@ -28,12 +28,14 @@ import com.arjuna.ats.arjuna.common.Uid;
 @Path("/" + TransactionalService.PATH_SEGMENT)
 public final class TransactionalService {
 
+    public static final String APPLICATION_ID = "org.wildfly.test.extension.rts";
+
     public static final String PATH_SEGMENT = "transactional-service";
 
     public static final String BASE_URL_PATH_SEGMENT = "base-url";
 
     @GET
-    public Response getParticipantInvocations(@QueryParam("participantId") final Uid participantId) {
+    public Response getParticipantInvocations(@QueryParam("participantId") final String participantId) {
         ParticipantInformation information = ParticipantsContainer.getInstance().getParticipantInformation(participantId);
 
         if (information == null) {
@@ -53,7 +55,7 @@ public final class TransactionalService {
         final LoggingParticipant participant = new LoggingParticipant(vote);
         ParticipantsManagerFactory.getInstance().setBaseUrl(uriInfo.getBaseUri().toString());
 
-        return ParticipantsManagerFactory.getInstance().enlist(participantEnlistmentUrl, participant).toString();
+        return ParticipantsManagerFactory.getInstance().enlist(APPLICATION_ID, participantEnlistmentUrl, participant).toString();
     }
 
     @PUT

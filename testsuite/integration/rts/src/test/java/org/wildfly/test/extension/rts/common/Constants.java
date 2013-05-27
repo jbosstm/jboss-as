@@ -15,9 +15,9 @@ public final class Constants {
 
     public static final String DEPLOYMENT_NAME = "test-deployment";
 
-    public static final String WORKING_PARTICIPANT_PATH_SEGMENT = "txresource";
+    public static final String RESTFUL_PARTICIPANT_PATH_SEGMENT = "txresource";
 
-    public static final String WORKING_PARTICIPANT_URL = Constants.BASE_URL + Constants.DEPLOYMENT_NAME + "/"
-            + WORKING_PARTICIPANT_PATH_SEGMENT;
+    public static final String RESTFUL_PARTICIPANT_URL = Constants.BASE_URL + Constants.DEPLOYMENT_NAME + "/"
+            + RESTFUL_PARTICIPANT_PATH_SEGMENT;
 
 }

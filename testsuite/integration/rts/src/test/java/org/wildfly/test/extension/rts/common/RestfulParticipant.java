@@ -27,7 +27,7 @@ import org.jboss.jbossts.star.util.TxStatus;
 import org.jboss.jbossts.star.util.TxStatusMediaType;
 import org.jboss.jbossts.star.util.TxSupport;
 
-@Path(Constants.WORKING_PARTICIPANT_PATH_SEGMENT)
+@Path(Constants.RESTFUL_PARTICIPANT_PATH_SEGMENT)
 public final class RestfulParticipant {
 
     private static int pid = 0;
@@ -377,7 +377,7 @@ public final class RestfulParticipant {
         TxSupport txn = new TxSupport();
 
         faults.remove(work.id);
-        work = makeWork(txn, Constants.WORKING_PARTICIPANT_URL, nid, work.tid, work.enlistUrl, twoPhaseAware, isVolatile, work.recoveryUrl, work.fault);
+        work = makeWork(txn, Constants.RESTFUL_PARTICIPANT_URL, nid, work.tid, work.enlistUrl, twoPhaseAware, isVolatile, work.recoveryUrl, work.fault);
         faults.put(nid, work);
         // if register is true then tell the transaction manager about the new location - otherwise the old
         // URIs will be used for transaction termination. This is used to test that the coordinator uses
