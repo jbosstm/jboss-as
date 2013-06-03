@@ -19,35 +19,53 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.wildfly.extension.rts;
+package org.wildfly.extension.rts.configuration;
 
-import org.jboss.as.controller.AbstractRemoveStepHandler;
-import org.jboss.as.controller.OperationContext;
-import org.jboss.as.controller.OperationFailedException;
-import org.jboss.dmr.ModelNode;
-import org.wildfly.extension.rts.logging.RTSLogger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
  * @author <a href="mailto:gytis@redhat.com">Gytis Trikleris</a>
- *
  */
-final class RTSSubsystemRemove extends AbstractRemoveStepHandler {
+public enum Attribute {
+    UNKNOWN(null),
 
-    static final RTSSubsystemRemove INSTANCE = new RTSSubsystemRemove();
+    SERVER("server"),
+    HOST("host"),
+    SOCKET_BINDING("socket-binding");
 
-    private RTSSubsystemRemove() {
+    private final String name;
+
+    Attribute(final String name) {
+        this.name = name;
     }
 
-    @Override
-    protected void performRuntime(OperationContext context, ModelNode operation, ModelNode model) throws OperationFailedException {
-        if (RTSLogger.ROOT_LOGGER.isTraceEnabled()) {
-            RTSLogger.ROOT_LOGGER.trace("RTSSubsystemRemove.performRuntime");
+    /**
+     * Get the local name of this attribute.
+     *
+     * @return the local name
+     */
+    public String getLocalName() {
+        return name;
+    }
+
+    private static final Map<String, Attribute> MAP;
+
+    static {
+        final Map<String, Attribute> map = new HashMap<String, Attribute>();
+        for (Attribute element : values()) {
+            final String name = element.getLocalName();
+            if (name != null) map.put(name, element);
         }
-
-        context.removeService(RTSSubsystemExtension.COORDINATOR);
-        context.removeService(RTSSubsystemExtension.PARTICIPANT);
+        MAP = map;
     }
 
+    public static Attribute forName(String localName) {
+        final Attribute element = MAP.get(localName);
+        return element == null ? UNKNOWN : element;
+    }
 
+    public String toString() {
+        return getLocalName();
+    }
 }

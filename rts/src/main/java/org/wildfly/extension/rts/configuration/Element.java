@@ -19,35 +19,49 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.wildfly.extension.rts;
+package org.wildfly.extension.rts.configuration;
 
-import org.jboss.as.controller.AbstractRemoveStepHandler;
-import org.jboss.as.controller.OperationContext;
-import org.jboss.as.controller.OperationFailedException;
-import org.jboss.dmr.ModelNode;
-import org.wildfly.extension.rts.logging.RTSLogger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
  * @author <a href="mailto:gytis@redhat.com">Gytis Trikleris</a>
- *
  */
-final class RTSSubsystemRemove extends AbstractRemoveStepHandler {
+public enum Element {
+    // must be first
+    UNKNOWN(null),
 
-    static final RTSSubsystemRemove INSTANCE = new RTSSubsystemRemove();
+    SERVLET("servlet");
 
-    private RTSSubsystemRemove() {
+    private final String name;
+
+    Element(final String name) {
+        this.name = name;
     }
 
-    @Override
-    protected void performRuntime(OperationContext context, ModelNode operation, ModelNode model) throws OperationFailedException {
-        if (RTSLogger.ROOT_LOGGER.isTraceEnabled()) {
-            RTSLogger.ROOT_LOGGER.trace("RTSSubsystemRemove.performRuntime");
+    /**
+     * Get the local name of this element.
+     *
+     * @return the local name
+     */
+    public String getLocalName() {
+        return name;
+    }
+
+    private static final Map<String, Element> MAP;
+
+    static {
+        final Map<String, Element> map = new HashMap<String, Element>();
+        for (Element element : values()) {
+            final String name = element.getLocalName();
+            if (name != null) { map.put(name, element); }
         }
-
-        context.removeService(RTSSubsystemExtension.COORDINATOR);
-        context.removeService(RTSSubsystemExtension.PARTICIPANT);
+        MAP = map;
     }
 
+    public static Element forName(String localName) {
+        final Element element = MAP.get(localName);
+        return element == null ? UNKNOWN : element;
+    }
 
 }
