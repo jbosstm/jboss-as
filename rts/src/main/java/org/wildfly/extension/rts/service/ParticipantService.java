@@ -24,8 +24,6 @@ public final class ParticipantService extends AbstractRTSService implements Serv
 
     private static final String DEPLOYMENT_NAME = "REST-AT Participant";
 
-    private DeploymentInfo participantDeploymentInfo = null;
-
     @Override
     public ParticipantService getValue() throws IllegalStateException, IllegalArgumentException {
         if (RTSLogger.ROOT_LOGGER.isTraceEnabled()) {
@@ -51,16 +49,16 @@ public final class ParticipantService extends AbstractRTSService implements Serv
             RTSLogger.ROOT_LOGGER.trace("ParticipantService.stop");
         }
 
-        undeployServlet(participantDeploymentInfo);
+        undeployServlet();
     }
 
     private void deployParticipant() {
-        undeployServlet(participantDeploymentInfo);
+        undeployServlet();
 
         final Map<String, String> initialParameters = new HashMap<String, String>();
         initialParameters.put("javax.ws.rs.Application", "org.wildfly.extension.rts.jaxrs.ParticipantApplication");
 
-        participantDeploymentInfo = getDeploymentInfo(DEPLOYMENT_NAME, CONTEXT_PATH, initialParameters);
+        final DeploymentInfo participantDeploymentInfo = getDeploymentInfo(DEPLOYMENT_NAME, CONTEXT_PATH, initialParameters);
 
         deployServlet(participantDeploymentInfo);
     }
