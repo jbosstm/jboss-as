@@ -22,8 +22,6 @@ public final class CoordinatorService extends AbstractRTSService implements Serv
 
     private static final String DEPLOYMENT_NAME = "REST-AT Coordinator";
 
-    private DeploymentInfo coordinatorDeploymentInfo = null;
-
     @Override
     public CoordinatorService getValue() throws IllegalStateException, IllegalArgumentException {
         if (RTSLogger.ROOT_LOGGER.isTraceEnabled()) {
@@ -48,16 +46,16 @@ public final class CoordinatorService extends AbstractRTSService implements Serv
             RTSLogger.ROOT_LOGGER.trace("CoordinatorService.stop");
         }
 
-        undeployServlet(coordinatorDeploymentInfo);
+        undeployServlet();
     }
 
     private void deployCoordinator() {
-        undeployServlet(coordinatorDeploymentInfo);
+        undeployServlet();
 
         final Map<String, String> initialParameters = new HashMap<String, String>();
         initialParameters.put("javax.ws.rs.Application", "org.wildfly.extension.rts.jaxrs.CoordinatorApplication");
 
-        coordinatorDeploymentInfo = getDeploymentInfo(DEPLOYMENT_NAME, CONTEXT_PATH, initialParameters);
+        final DeploymentInfo coordinatorDeploymentInfo = getDeploymentInfo(DEPLOYMENT_NAME, CONTEXT_PATH, initialParameters);
 
         deployServlet(coordinatorDeploymentInfo);
     }
