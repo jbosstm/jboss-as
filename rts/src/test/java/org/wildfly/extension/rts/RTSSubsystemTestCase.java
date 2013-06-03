@@ -1,6 +1,6 @@
 /*
 * JBoss, Home of Professional Open Source.
-* Copyright 2011, Red Hat Middleware LLC, and individual contributors
+* Copyright 2013, Red Hat Middleware LLC, and individual contributors
 * as indicated by the @author tags. See the copyright.txt file in the
 * distribution for a full listing of individual contributors.
 *
@@ -26,6 +26,9 @@ import java.io.IOException;
 import org.jboss.as.subsystem.test.AbstractSubsystemBaseTest;
 import org.wildfly.extension.rts.RTSSubsystemExtension;
 
+/**
+ * @author <a href="mailto:gytis@redhat.com">Gytis Trikleris</a>
+ */
 public class RTSSubsystemTestCase extends AbstractSubsystemBaseTest {
 
     public RTSSubsystemTestCase() {
@@ -34,7 +37,7 @@ public class RTSSubsystemTestCase extends AbstractSubsystemBaseTest {
 
     @Override
     protected String getSubsystemXml() throws IOException {
-        return "<subsystem xmlns=\"" + RTSSubsystemExtension.NAMESPACE + "\"/>";
+        return readResource("subsystem.xml");
     }
 
 }
