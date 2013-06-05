@@ -23,6 +23,7 @@ package org.wildfly.extension.rts.service;
 
 import io.undertow.servlet.api.DeploymentInfo;
 
+import java.net.Inet4Address;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,8 +94,14 @@ public final class ParticipantService extends AbstractRTSService implements Serv
     }
 
     private String getBaseUrl() {
-        return "http://" + injectedSocketBinding.getValue().getAddress().getHostAddress()
-                + ":" + injectedSocketBinding.getValue().getPort();
+        final String address = injectedSocketBinding.getValue().getAddress().getHostAddress();
+        final int port = injectedSocketBinding.getValue().getPort();
+
+        if (injectedSocketBinding.getValue().getAddress() instanceof Inet4Address) {
+            return "http://" + address + ":" + port;
+        } else {
+            return "http://[" + address + "]:" + port;
+        }
     }
 
 }

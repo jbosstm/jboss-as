@@ -27,8 +27,10 @@ import org.jboss.jbossts.star.util.TxStatus;
 import org.jboss.jbossts.star.util.TxStatusMediaType;
 import org.jboss.jbossts.star.util.TxSupport;
 
-@Path(Constants.RESTFUL_PARTICIPANT_PATH_SEGMENT)
+@Path(RestfulParticipant.PATH_SEGMENT)
 public final class RestfulParticipant {
+
+    public static final String PATH_SEGMENT = "txresource";
 
     private static int pid = 0;
 
@@ -87,7 +89,7 @@ public final class RestfulParticipant {
             throw new WebApplicationException(HttpURLConnection.HTTP_NOT_FOUND);
 
         if ("move".equals(query))
-            res = moveParticipant(work, arg, register, isTwoPhaseAware, isVolatile);
+            /* Ignore*/;
         else if ("recoveryUrl".equals(query))
             res = work.recoveryUrl;
         else if ("status".equals(query))
@@ -371,26 +373,6 @@ public final class RestfulParticipant {
                 .makeTwoPhaseUnAwareParticipantLinkHeader(baseURI, isVolatile, id, txId, true);
 
         return new Work(id, txId, baseURI + '/' + id, linkHeader, enlistUrl, recoveryUrl, fault);
-    }
-
-    private String moveParticipant(Work work, String nid, String register, boolean twoPhaseAware, boolean isVolatile) {
-        TxSupport txn = new TxSupport();
-
-        faults.remove(work.id);
-        work = makeWork(txn, Constants.RESTFUL_PARTICIPANT_URL, nid, work.tid, work.enlistUrl, twoPhaseAware, isVolatile, work.recoveryUrl, work.fault);
-        faults.put(nid, work);
-        // if register is true then tell the transaction manager about the new location - otherwise the old
-        // URIs will be used for transaction termination. This is used to test that the coordinator uses
-        // the recovery URI correctly
-        if ("true".equals(register)) {
-            Map<String, String> reqHeaders = new HashMap<String, String>();
-
-            reqHeaders.put("Link", work.pLinks);
-            txn.httpRequest(new int[] { HttpURLConnection.HTTP_OK }, work.recoveryUrl, "PUT", TxMediaType.POST_MEDIA_TYPE,
-                    null, null, reqHeaders);
-        }
-
-        return nid;
     }
 
 }

@@ -1,7 +1,6 @@
 package org.wildfly.test.extension.rts;
 
 import java.io.File;
-import java.lang.String;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,8 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.omg.CORBA.PRIVATE_MEMBER;
-import org.wildfly.test.extension.rts.common.Constants;
 import org.wildfly.test.extension.rts.common.LoggingParticipant;
 
 /**
@@ -41,11 +38,17 @@ public final class ParticipantTestCase {
 
     private static final String DEPENDENCIES = "Dependencies: org.jboss.narayana.rts\n";
 
+    private static final String DEPLOYMENT_NAME = "test-deployment";
+
+    private static final String BASE_URL = getBaseUrl();
+
+    private static final String TRANSACTION_MANAGER_URL = BASE_URL + "/rest-at-coordinator/tx/transaction-manager";
+
     private TxSupport txSupport;
 
     @Deployment
     public static WebArchive getDeployment() {
-        return ShrinkWrap.create(WebArchive.class, Constants.DEPLOYMENT_NAME + ".war")
+        return ShrinkWrap.create(WebArchive.class, DEPLOYMENT_NAME + ".war")
                 .addClasses(LoggingParticipant.class)
                 .addAsWebInfResource(new File("../test-classes", "web.xml"), "web.xml")
                 .addAsManifestResource(new StringAsset(DEPENDENCIES), "MANIFEST.MF");
@@ -53,7 +56,7 @@ public final class ParticipantTestCase {
 
     @Before
     public void before() {
-        txSupport = new TxSupport(Constants.TRANSACTION_MANAGER_URL);
+        txSupport = new TxSupport(TRANSACTION_MANAGER_URL);
     }
 
     @After
@@ -216,6 +219,33 @@ public final class ParticipantTestCase {
         Assert.assertEquals(TxStatus.TransactionCommitted.name(), transactionStatus);
         Assert.assertEquals(Arrays.asList(new String[] { "prepare", "commit" }), participants.get(0).getInvocations());
         Assert.assertEquals(Collections.EMPTY_LIST, participants.get(1).getInvocations());
+    }
+
+    private static String getBaseUrl() {
+        String baseAddress = System.getProperty("jboss.bind.address");
+        String basePort = System.getProperty("jboss.bind.port");
+
+        if (baseAddress == null) {
+            if (isIPv6()) {
+                baseAddress = "http://[::1]";
+            } else {
+                baseAddress = "http://localhost";
+            }
+        } else if (!baseAddress.toLowerCase().startsWith("http://") && !baseAddress.toLowerCase().startsWith("https://")) {
+            baseAddress = "http://" + baseAddress;
+        }
+
+        if (basePort == null) {
+            basePort = "8080";
+        }
+
+        return baseAddress + ":" + basePort;
+    }
+
+    private static boolean isIPv6() {
+        final String preferIPv6Addresses = System.getProperty("java.net.preferIPv6Addresses");
+
+        return preferIPv6Addresses != null && preferIPv6Addresses.toLowerCase().equals("true");
     }
 
 }
