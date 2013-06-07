@@ -79,12 +79,14 @@ final class RTSSubsystemAdd extends AbstractBoottimeAddStepHandler {
         final ServiceBuilder<CoordinatorService> coordinatorServiceBuilder = context
                 .getServiceTarget()
                 .addService(RTSSubsystemExtension.COORDINATOR, coordinatorService)
+                .addListener(verificationHandler)
                 .addDependency(UndertowService.virtualHostName(serverName, hostName), Host.class,
                         coordinatorService.getInjectedHost());
 
         final ServiceBuilder<ParticipantService> participantServiceBuilder = context
                 .getServiceTarget()
                 .addService(RTSSubsystemExtension.PARTICIPANT, participantService)
+                .addListener(verificationHandler)
                 .addDependency(SocketBinding.JBOSS_BINDING_NAME.append(socketBindingName), SocketBinding.class,
                         participantService.getInjectedSocketBinding())
                 .addDependency(UndertowService.virtualHostName(serverName, hostName), Host.class,

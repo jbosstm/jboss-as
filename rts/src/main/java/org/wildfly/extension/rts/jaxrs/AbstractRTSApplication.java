@@ -41,6 +41,12 @@ import org.jboss.resteasy.plugins.providers.InputStreamProvider;
 import org.jboss.resteasy.plugins.providers.JaxrsFormProvider;
 import org.jboss.resteasy.plugins.providers.SerializableProvider;
 import org.jboss.resteasy.plugins.providers.StringTextStar;
+import org.jboss.resteasy.plugins.providers.jaxb.CollectionProvider;
+import org.jboss.resteasy.plugins.providers.jaxb.JAXBElementProvider;
+import org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlRootElementProvider;
+import org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlSeeAlsoProvider;
+import org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlTypeProvider;
+import org.jboss.resteasy.plugins.providers.jaxb.MapProvider;
 import org.jboss.resteasy.plugins.providers.jaxb.XmlJAXBContextFinder;
 import org.jboss.resteasy.plugins.providers.jaxb.json.JettisonElementProvider;
 import org.jboss.resteasy.plugins.providers.jaxb.json.JettisonXmlRootElementProvider;
@@ -107,12 +113,12 @@ public abstract class AbstractRTSApplication extends Application {
         Set<Class<?>> providers = new HashSet<>();
 
         // Message body writers / readers
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.CollectionProvider.class);
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlRootElementProvider.class);
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlSeeAlsoProvider.class);
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.JAXBXmlTypeProvider.class);
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.JAXBElementProvider.class);
-        providers.add(org.jboss.resteasy.plugins.providers.jaxb.MapProvider.class);
+        providers.add(CollectionProvider.class);
+        providers.add(JAXBXmlRootElementProvider.class);
+        providers.add(JAXBXmlSeeAlsoProvider.class);
+        providers.add(JAXBXmlTypeProvider.class);
+        providers.add(JAXBElementProvider.class);
+        providers.add(MapProvider.class);
 
         // Context resolvers
         providers.add(XmlJAXBContextFinder.class);
