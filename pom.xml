@@ -1316,6 +1316,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-blacktie</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.jboss.narayana.txframework</groupId>
                 <artifactId>txframework</artifactId>
                 <version>${version.org.jboss.narayana}</version>
@@ -4414,6 +4420,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.jboss.narayana.blacktie</groupId>
+                <artifactId>blacktie-stompconnect</artifactId>
+                <version>${version.org.jboss.narayana}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
                 <groupId>org.jboss.narayana.rts</groupId>
                 <artifactId>restat-integration</artifactId>
                 <version>${version.org.jboss.narayana}</version>
@@ -6206,6 +6224,7 @@
                 <module>weld</module>
                 <module>xts</module>
                 <module>rts</module>
+                <module>blacktie</module>
                 <module>testsuite/shared</module>
                 <module>testsuite</module>
             </modules>
