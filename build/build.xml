@@ -1049,6 +1049,10 @@
             <maven-resource group="org.wildfly" artifact="wildfly-rts"/>
         </module-def>
 
+        <module-def name="org.wildfly.extension.blacktie">
+            <maven-resource group="org.wildfly" artifact="wildfly-blacktie"/>
+        </module-def>
+
         <module-def name="org.jboss.classfilewriter">
             <maven-resource group="org.jboss.classfilewriter" artifact="jboss-classfilewriter"/>
         </module-def>
@@ -1293,6 +1297,10 @@
             <maven-resource group="org.jboss.narayana.rts" artifact="restat-api"/>
             <maven-resource group="org.jboss.narayana.rts" artifact="restat-util"/>
             <maven-resource group="org.jboss.narayana.rts" artifact="restat-integration"/>
+        </module-def>
+
+        <module-def name="org.jboss.narayana.blacktie">
+            <maven-resource group="org.jboss.narayana.blacktie" artifact="blacktie-stompconnect"/>
         </module-def>
 
         <module-def name="org.jgroups">
