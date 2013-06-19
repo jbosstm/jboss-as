@@ -1049,6 +1049,10 @@
             <maven-resource group="org.wildfly" artifact="wildfly-rts"/>
         </module-def>
 
+        <module-def name="org.wildfly.extension.blacktie">
+            <maven-resource group="org.wildfly" artifact="wildfly-blacktie"/>
+        </module-def>
+
         <module-def name="org.jboss.classfilewriter">
             <maven-resource group="org.jboss.classfilewriter" artifact="jboss-classfilewriter"/>
         </module-def>
