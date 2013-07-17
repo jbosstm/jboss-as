@@ -96,6 +96,11 @@
            paramTemplateFile="configuration/standalone/template.xml" 
            paramSubsystemsFile="configuration/examples/subsystems-rts.xml"
            paramOutputFile="${generated.configs.examples}/standalone-rts.xml"/>
+      <generate-server-config 
+           paramTemplateFile="configuration/standalone/template.xml" 
+           paramSubsystemsFile="configuration/examples/subsystems-blacktie.xml"
+           paramOutputFile="${generated.configs.examples}/standalone-blacktie.xml"/>
+    		
     		
     </target>
 

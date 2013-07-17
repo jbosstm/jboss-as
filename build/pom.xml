@@ -1246,6 +1246,11 @@
                 </dependency>
 
                 <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-blacktie</artifactId>
+                </dependency>
+
+                <dependency>
                     <groupId>org.jboss.narayana.rts</groupId>
                     <artifactId>restat-api</artifactId>
                 </dependency>
@@ -3212,6 +3217,10 @@
                                         <group>
                                             <title>Module org.wildfly.rts</title>
                                             <packages>org.wildfly.extension.rts</packages>
+                                        </group>
+                                        <group>
+                                            <title>Module org.wildfly.blacktie</title>
+                                            <packages>org.wildfly.extension.blacktie</packages>
                                         </group>
                                         <group>
                                             <title>Module org.jboss.classfilewriter</title>
