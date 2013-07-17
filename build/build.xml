@@ -1299,10 +1299,6 @@
             <maven-resource group="org.jboss.narayana.rts" artifact="restat-integration"/>
         </module-def>
 
-        <module-def name="org.jboss.narayana.blacktie">
-            <maven-resource group="org.jboss.narayana.blacktie" artifact="blacktie-stompconnect"/>
-        </module-def>
-
         <module-def name="org.jgroups">
             <maven-resource group="org.jgroups" artifact="jgroups"/>
         </module-def>
