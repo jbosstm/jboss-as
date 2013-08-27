@@ -28,18 +28,12 @@ import org.jboss.as.controller.AbstractBoottimeAddStepHandler;
 import org.jboss.as.controller.OperationContext;
 import org.jboss.as.controller.OperationFailedException;
 import org.jboss.as.controller.ServiceVerificationHandler;
-import org.jboss.as.messaging.MessagingServices;
-import org.jboss.as.messaging.jms.JMSQueueAdd;
-import org.jboss.as.messaging.jms.JMSQueueConfigurationRuntimeHandler;
-import org.jboss.as.messaging.jms.JMSServices;
 import org.jboss.as.network.SocketBinding;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.ServiceBuilder;
 import org.jboss.msc.service.ServiceController;
-import org.jboss.msc.service.ServiceName;
 import org.wildfly.extension.blacktie.configuration.Attribute;
 import org.wildfly.extension.blacktie.logging.BlacktieLogger;
-//import org.wildfly.extension.blacktie.service.BlacktieAdminService;
 import org.wildfly.extension.blacktie.service.StompConnectService;
 
 /**
@@ -75,7 +69,6 @@ final class BlacktieSubsystemAdd extends AbstractBoottimeAddStepHandler {
         final String connectionFactoryName = model.get(Attribute.CONNECTION_FACTORYNAME.getLocalName()).asString();
         final String socketBindingName = model.get(Attribute.SOCKET_BINDING.getLocalName()).asString();
 
-        // perform StompConnectService
         final StompConnectService stompConnectService = new StompConnectService(connectionFactoryName);
         final ServiceBuilder<StompConnectService> stompConnectServiceBuilder = context
                 .getServiceTarget()
@@ -84,48 +77,12 @@ final class BlacktieSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 .addDependency(SocketBinding.JBOSS_BINDING_NAME.append(socketBindingName), SocketBinding.class,
                         stompConnectService.getInjectedSocketBinding());
 
-        // perform install message queue
-        /*
-        try {
-            final String hqServer = "default";
-            final ModelNode btstompAdmin = new ModelNode();
-            btstompAdmin.add("/queue/BTR_BTStompAdmin");
-            final ModelNode btdomainAdmin = new ModelNode();
-            btdomainAdmin.add("/queue/BTR_BTDomainAdmin");
-
-            installMessageQueue(hqServer, "BTR_BTStompAdmin", btstompAdmin, context, verificationHandler, newControllers);
-            installMessageQueue(hqServer, "BTR_BTDomainAdmin", btdomainAdmin, context, verificationHandler, newControllers);
-        } catch (Exception e) {
-            BlacktieLogger.ROOT_LOGGER.warn("install message queue failed");
-        }
-
-        // perform BlacktieAdminService
-        final BlacktieAdminService blacktieAdminService = new BlacktieAdminService();
-        final ServiceBuilder<BlacktieAdminService> blacktieAdminServcieBuilder = context
-                .getServiceTarget()
-                .addService(BlacktieSubsystemExtension.ADMINSERVICE, blacktieAdminService)
-                .addListener(verificationHandler);
-
-        */
         stompConnectServiceBuilder.setInitialMode(ServiceController.Mode.ACTIVE);
-        //blacktieAdminServcieBuilder.setInitialMode(ServiceController.Mode.ACTIVE);
 
         final ServiceController<StompConnectService> stompConnectServiceController = stompConnectServiceBuilder.install();
-        //final ServiceController<BlacktieAdminService> blacktieAdminServiceController = blacktieAdminServcieBuilder.install();
 
         if (newControllers != null) {
             newControllers.add(stompConnectServiceController);
-            //newControllers.add(blacktieAdminServiceController);
         }
-    }
-
-    private void installMessageQueue(String hqServer, String name, ModelNode destination, OperationContext context, ServiceVerificationHandler verificationHandler, List<ServiceController<?>> newControllers) {
-        final ServiceName hqServiceName = MessagingServices.getHornetQServiceName(hqServer);
-        final String[] jndiBindings = JMSServices.getJndiBindings(destination);
-        JMSQueueAdd.INSTANCE.installServices(
-                verificationHandler, newControllers, name, context.getServiceTarget(),
-                hqServiceName, null, false, jndiBindings );
-
-        JMSQueueConfigurationRuntimeHandler.INSTANCE.registerDestination(hqServer, name, destination);
     }
 }
