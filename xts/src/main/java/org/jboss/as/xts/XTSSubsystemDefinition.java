@@ -45,6 +45,13 @@ import org.jboss.dmr.ModelType;
 public class XTSSubsystemDefinition extends SimpleResourceDefinition {
     protected static final XTSSubsystemDefinition INSTANCE = new XTSSubsystemDefinition();
 
+    protected static final SimpleAttributeDefinition HOST_NAME =
+            new SimpleAttributeDefinitionBuilder(CommonAttributes.HOST, ModelType.STRING, true)
+                    .setAllowExpression(true)
+                    .setXmlName(Attribute.NAME.getLocalName())
+                    .setFlags(AttributeAccess.Flag.RESTART_ALL_SERVICES)
+                    .build();
+
     protected static final SimpleAttributeDefinition ENVIRONMENT_URL =
             new SimpleAttributeDefinitionBuilder(ModelDescriptionConstants.URL, ModelType.STRING, true)
                     .setAllowExpression(true)
@@ -87,6 +94,7 @@ public class XTSSubsystemDefinition extends SimpleResourceDefinition {
 
     @Override
     public void registerAttributes(ManagementResourceRegistration resourceRegistration) {
+        resourceRegistration.registerReadWriteAttribute(HOST_NAME, null, new ReloadRequiredWriteAttributeHandler(HOST_NAME));
         resourceRegistration.registerReadWriteAttribute(ENVIRONMENT_URL, null, new ReloadRequiredWriteAttributeHandler(ENVIRONMENT_URL));
         resourceRegistration.registerReadWriteAttribute(DEFAULT_CONTEXT_PROPAGATION, null, new ReloadRequiredWriteAttributeHandler(DEFAULT_CONTEXT_PROPAGATION));
         //this here just for legacy support!

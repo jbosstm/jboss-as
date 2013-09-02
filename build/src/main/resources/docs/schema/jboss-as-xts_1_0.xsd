@@ -43,9 +43,21 @@
             </xs:documentation>
         </xs:annotation>
         <xs:all>
+            <xs:element name="host" type="host" minOccurs="1" maxOccurs="1"/>
             <xs:element name="xts-environment" type="xts-environment" minOccurs="0" maxOccurs="1"/>
             <xs:element name="default-context-propagation" type="default-context-propagation" minOccurs="0" maxOccurs="1"/>
         </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="host">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+                    name configures which host should be used by the XTS subsystem to register endpoints.
+                ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="xts-environment">

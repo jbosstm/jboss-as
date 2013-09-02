@@ -23,8 +23,11 @@
 package org.jboss.as.xts;
 
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD;
+import static org.jboss.as.controller.parsing.ParseUtils.missingRequired;
+import static org.jboss.as.controller.parsing.ParseUtils.missingRequiredElement;
 import static org.jboss.as.xts.XTSSubsystemDefinition.DEFAULT_CONTEXT_PROPAGATION;
 import static org.jboss.as.xts.XTSSubsystemDefinition.ENVIRONMENT_URL;
+import static org.jboss.as.xts.XTSSubsystemDefinition.HOST_NAME;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -61,7 +64,7 @@ class XTSSubsystemParser implements XMLStreamConstants, XMLElementReader<List<Mo
         final ModelNode subsystem = Util.getEmptyOperation(ADD, PathAddress.pathAddress(XTSExtension.SUBSYSTEM_PATH).toModelNode());
         list.add(subsystem);
 
-        // elements
+        final EnumSet<Element> required = EnumSet.of(Element.HOST);
         final EnumSet<Element> encountered = EnumSet.noneOf(Element.class);
 
         while (reader.hasNext() && reader.nextTag() != END_ELEMENT) {
@@ -71,7 +74,12 @@ class XTSSubsystemParser implements XMLStreamConstants, XMLElementReader<List<Mo
                     if (!encountered.add(element)) {
                         throw ParseUtils.unexpectedElement(reader);
                     }
+                    required.remove(element);
                     switch (element) {
+                        case HOST: {
+                            parseHostElement(reader, subsystem);
+                            break;
+                        }
                         case XTS_ENVIRONMENT: {
                             parseXTSEnvironmentElement(reader,subsystem);
                             break;
@@ -90,6 +98,34 @@ class XTSSubsystemParser implements XMLStreamConstants, XMLElementReader<List<Mo
                     throw ParseUtils.unexpectedElement(reader);
                 }
             }
+        }
+
+        if (!required.isEmpty()) {
+            throw missingRequiredElement(reader, required);
+        }
+    }
+
+    static void parseHostElement(XMLExtendedStreamReader reader, ModelNode subsystem) throws XMLStreamException {
+        final EnumSet<Attribute> required = EnumSet.of(Attribute.NAME);
+        final int count = reader.getAttributeCount();
+        for (int i = 0; i < count; i++) {
+            ParseUtils.requireNoNamespaceAttribute(reader, i);
+            final String value = reader.getAttributeValue(i);
+            final Attribute attribute = Attribute.forName(reader.getAttributeLocalName(i));
+            required.remove(attribute);
+            switch (attribute) {
+                case NAME:
+                    HOST_NAME.parseAndSetParameter(value, subsystem, reader);
+                    break;
+                default:
+                    throw ParseUtils.unexpectedAttribute(reader, i);
+            }
+        }
+        // Handle elements
+        ParseUtils.requireNoContent(reader);
+
+        if (!required.isEmpty()) {
+            throw missingRequired(reader, required);
         }
     }
 
@@ -161,6 +197,9 @@ class XTSSubsystemParser implements XMLStreamConstants, XMLElementReader<List<Mo
 
         ModelNode node = context.getModelNode();
 
+        writer.writeStartElement(Element.HOST.getLocalName());
+        HOST_NAME.marshallAsAttribute(node, writer);
+        writer.writeEndElement();
 
         writer.writeStartElement(Element.XTS_ENVIRONMENT.getLocalName());
         ENVIRONMENT_URL.marshallAsAttribute(node, writer);
