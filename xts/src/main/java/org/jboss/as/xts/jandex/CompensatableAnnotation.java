@@ -31,12 +31,12 @@ import org.jboss.as.xts.XTSException;
 public class CompensatableAnnotation {
 
     public static final String[] COMPENSATABLE_ANNOTATIONS = {
-            "org.jboss.narayana.compensations.api.Compensatable",
-            "org.jboss.narayana.compensations.api.CancelOnFailure",
-            "org.jboss.narayana.compensations.api.CompensationScoped",
-            "org.jboss.narayana.compensations.api.TxCompensate",
-            "org.jboss.narayana.compensations.api.TxConfirm",
-            "org.jboss.narayana.compensations.api.TxLogged"
+            "org.jboss.narayana.compensations.cdi.api.Compensatable",
+            "org.jboss.narayana.compensations.cdi.api.CancelOnFailure",
+            "org.jboss.narayana.compensations.cdi.api.CompensationScoped",
+            "org.jboss.narayana.compensations.cdi.api.TxCompensate",
+            "org.jboss.narayana.compensations.cdi.api.TxConfirm",
+            "org.jboss.narayana.compensations.cdi.api.TxLogged"
     };
 
     private CompensatableAnnotation() {
