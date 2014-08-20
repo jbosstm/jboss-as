@@ -186,16 +186,19 @@ public final class CoordinatorTestCase extends AbstractTestCase {
     }
 
     @Test
-    public void testTimeoutCleanup() throws InterruptedException {
+    public void testTimeout() throws InterruptedException {
         TxSupport txn = new TxSupport();
         int txnCount = txn.txCount();
-        txn.startTx(1000);
+        txn.startTx(2000);
         txn.enlistTestResource(getDeploymentUrl() + WorkRestATResource.PATH_SEGMENT, false);
 
         // Let the txn timeout
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
-        Assert.assertEquals(txnCount, txn.txCount());
+        String txStatus = txn.txStatus();
+        Assert.assertEquals(txStatus, "txstatus=TransactionRollbackOnly");
+        String commitTx = txn.commitTx();
+        Assert.assertEquals(commitTx, "txstatus=TransactionRolledBack");
     }
 
     protected String getBaseUrl() {
