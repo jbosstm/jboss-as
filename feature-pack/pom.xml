@@ -2366,6 +2366,7 @@
                                     <licensesOutputFile>
                                         ${project.build.directory}/${project.build.finalName}/content/docs/licenses/licenses.xml
                                     </licensesOutputFile>
+									<skipDownloadLicenses>true</skipDownloadLicenses>
                                 </configuration>
                             </execution>
                         </executions>
