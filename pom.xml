@@ -110,6 +110,7 @@
         <version.joda-time>2.7</version.joda-time>
         <version.jsoup>1.8.1</version.jsoup>
         <version.net.jcip>1.0</version.net.jcip>
+        <version.org.antlr-34>3.4</version.org.antlr-34>
         <version.org.apache.avro>1.7.6</version.org.apache.avro>
         <version.org.apache.cxf>3.0.4</version.org.apache.cxf>
         <version.org.apache.cxf.xjcplugins>3.0.3</version.org.apache.cxf.xjcplugins>
@@ -140,7 +141,7 @@
         <version.org.hibernate.validator>5.1.3.Final</version.org.hibernate.validator>
         <version.org.hibernate.javax.persistence.hibernate-jpa-2.1-api>1.0.0.Final</version.org.hibernate.javax.persistence.hibernate-jpa-2.1-api>
         <version.org.hibernate.hql>1.1.0.Final</version.org.hibernate.hql>
-        <version.org.hibernate.search>5.1.1.Final</version.org.hibernate.search>
+        <version.org.hibernate.search>5.1.2.Final</version.org.hibernate.search>
         <version.org.hornetq>2.4.7.Final</version.org.hornetq>
         <version.org.infinispan>7.1.1.Final</version.org.infinispan>
         <version.org.jasypt>1.9.1</version.org.jasypt>
@@ -194,11 +195,11 @@
         <version.org.jboss.spec.javax.websockets>1.1.1.Final</version.org.jboss.spec.javax.websockets>
         <version.org.jboss.weld.weld>2.2.11.Final</version.org.jboss.weld.weld>
         <version.org.jboss.weld.weld-api>2.2.SP4</version.org.jboss.weld.weld-api>
-        <version.org.jboss.ws.api>1.0.3.CR4</version.org.jboss.ws.api>
-        <version.org.jboss.ws.spi>3.0.0.CR2</version.org.jboss.ws.spi>
-        <version.org.jboss.ws.common>3.0.0.CR1</version.org.jboss.ws.common>
-        <version.org.jboss.ws.common.tools>1.2.1.CR2</version.org.jboss.ws.common.tools>
-        <version.org.jboss.ws.cxf>5.0.0.CR1</version.org.jboss.ws.cxf>
+        <version.org.jboss.ws.api>1.0.3.Final</version.org.jboss.ws.api>
+        <version.org.jboss.ws.spi>3.0.0.Final</version.org.jboss.ws.spi>
+        <version.org.jboss.ws.common>3.0.0.Final</version.org.jboss.ws.common>
+        <version.org.jboss.ws.common.tools>1.2.1.Final</version.org.jboss.ws.common.tools>
+        <version.org.jboss.ws.cxf>5.0.0.Final</version.org.jboss.ws.cxf>
         <version.org.jboss.ws.jaxws-undertow-httpspi>1.0.1.Final</version.org.jboss.ws.jaxws-undertow-httpspi>
         <version.org.jgroups>3.6.2.Final</version.org.jgroups>
         <version.org.jipijapa>1.0.1.Final</version.org.jipijapa>
@@ -213,7 +214,7 @@
         <version.org.testng>6.1.1</version.org.testng>
         <version.org.wildfly.build-tools>1.0.0.Alpha8</version.org.wildfly.build-tools>
         <version.org.wildfly.checkstyle-config>1.0.1.Final</version.org.wildfly.checkstyle-config>
-        <version.org.wildfly.core>1.0.0.Beta5</version.org.wildfly.core>
+        <version.org.wildfly.core>1.0.0.Beta6</version.org.wildfly.core>
         <version.org.wildfly.arquillian>1.0.0.Alpha5</version.org.wildfly.arquillian>
         <version.org.yaml.snakeyaml>1.15</version.org.yaml.snakeyaml>
         <version.sun.jaxb>2.2.11</version.sun.jaxb>
@@ -3505,6 +3506,17 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${version.org.apache.lucene}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.lucene</groupId>
+                        <artifactId>lucene-sandbox</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queries</artifactId>
                 <version>${version.org.apache.lucene}</version>
             </dependency>
@@ -4018,6 +4030,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr-runtime</artifactId>
+                <version>${version.org.antlr-34}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>stringtemplate</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.1-api</artifactId>
                 <version>${version.org.hibernate.javax.persistence.hibernate-jpa-2.1-api}</version>
@@ -4072,6 +4096,24 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-search-infinispan</artifactId>
+                <version>${version.org.hibernate.search}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search-backend-jms</artifactId>
+                <version>${version.org.hibernate.search}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search-backend-jgroups</artifactId>
+                <version>${version.org.hibernate.search}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search-serialization-avro</artifactId>
                 <version>${version.org.hibernate.search}</version>
             </dependency>
 
@@ -4618,36 +4660,6 @@
                 <groupId>org.jboss.narayana.jts</groupId>
                 <artifactId>narayana-jts-idlj</artifactId>
                 <version>${version.org.jboss.narayana}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman-submit</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.logmanager</groupId>
-                        <artifactId>jboss-logmanager</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.hornetq</groupId>
-                        <artifactId>hornetq-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jfreechart</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jcommon</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>tanukisoft</groupId>
-                        <artifactId>wrapper</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -4660,48 +4672,6 @@
                 <groupId>org.jboss.narayana.xts</groupId>
                 <artifactId>jbossxts</artifactId>
                 <version>${version.org.jboss.narayana}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-httpclient</groupId>
-                        <artifactId>commons-httpclient</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.hornetq</groupId>
-                        <artifactId>hornetq-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.hornetq</groupId>
-                        <artifactId>hornetq-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.narayana.arjunacore</groupId>
-                        <artifactId>arjunacore</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman-submit</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jfreechart</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jcommon</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.spec.javax.servlet</groupId>
-                        <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -4709,68 +4679,12 @@
                 <artifactId>jbossxts</artifactId>
                 <classifier>api</classifier>
                 <version>${version.org.jboss.narayana}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-httpclient</groupId>
-                        <artifactId>commons-httpclient</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.hornetq</groupId>
-                        <artifactId>hornetq-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.narayana.arjunacore</groupId>
-                        <artifactId>arjunacore</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.byteman</groupId>
-                        <artifactId>byteman-submit</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jfreechart</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jfree</groupId>
-                        <artifactId>jcommon</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.spec.javax.servlet</groupId>
-                        <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>org.jboss.narayana</groupId>
                 <artifactId>jbosstxbridge</artifactId>
                 <version>${version.org.jboss.narayana}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-httpclient</groupId>
-                        <artifactId>commons-httpclient</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.narayana.xts</groupId>
-                        <artifactId>ws-c11</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.jboss.narayana.jta</groupId>
-                        <artifactId>narayana-jta</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -6106,12 +6020,6 @@
                 <groupId>org.jboss.ws</groupId>
                 <artifactId>jbossws-spi</artifactId>
                 <version>${version.org.jboss.ws.spi}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.logging</groupId>
-                        <artifactId>jboss-logging-annotations</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>

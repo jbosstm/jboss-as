@@ -35,11 +35,13 @@
     <dependencies>
         <module name="javax.api"/>
         <module name="javax.transaction.api"/>
-        <module name="org.hibernate.hql" optional="true"/>
-        <module name="org.hibernate.search.engine"/>
-        <module name="org.infinispan" services="import"/>
+        <module name="org.hibernate.hql"/>
+        <module name="org.antlr.antlr-runtime" slot="3.4"/>
+        <module name="org.hibernate.search.engine" export="true"/>
+        <module name="org.infinispan"/>
         <module name="org.infinispan.commons"/>
-        <module name="org.infinispan.lucene.directory" optional="true"/>
+        <module name="org.infinispan.hibernate-search.directory-provider" />
+        <module name="org.infinispan.lucene-directory" services="import" optional="true"/>
         <module name="org.infinispan.query.dsl"/>
         <module name="org.jboss.logging"/>
     </dependencies>
