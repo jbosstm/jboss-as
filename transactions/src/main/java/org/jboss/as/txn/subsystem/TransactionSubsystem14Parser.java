@@ -62,6 +62,8 @@ class TransactionSubsystem14Parser implements XMLStreamConstants, XMLElementRead
 
     protected boolean choiceObjectStoreEncountered;
 
+    protected boolean relativeToEncountered;
+
     protected Namespace getExpectedNamespace() {
         return validNamespace;
     }
@@ -99,6 +101,7 @@ class TransactionSubsystem14Parser implements XMLStreamConstants, XMLElementRead
         final EnumSet<Element> required = EnumSet.of(Element.RECOVERY_ENVIRONMENT, Element.CORE_ENVIRONMENT);
         final EnumSet<Element> encountered = EnumSet.noneOf(Element.class);
         choiceObjectStoreEncountered = false;
+        relativeToEncountered = false;
         while (reader.hasNext() && reader.nextTag() != END_ELEMENT) {
             if (Namespace.forUri(reader.getNamespaceURI()) != getExpectedNamespace()) {
                 throw unexpectedElement(reader);
@@ -110,6 +113,13 @@ class TransactionSubsystem14Parser implements XMLStreamConstants, XMLElementRead
             }
             readElement(reader, element, list, subsystem, logStoreOperation);
         }
+
+        if(!relativeToEncountered) {
+            ModelNode relativeVal = subsystem.get(TransactionSubsystemRootResourceDefinition.OBJECT_STORE_RELATIVE_TO.getName());
+            relativeVal.set(new ModelNode().set("jboss.server.data.dir"));
+            System.out.println("set relative to default");
+        }
+
         if (!required.isEmpty()) {
             throw missingRequiredElement(reader, required);
         }
@@ -203,6 +213,7 @@ class TransactionSubsystem14Parser implements XMLStreamConstants, XMLElementRead
             switch (attribute) {
                 case RELATIVE_TO:
                     TransactionSubsystemRootResourceDefinition.OBJECT_STORE_RELATIVE_TO.parseAndSetParameter(value, operation, reader);
+                    relativeToEncountered = true;
                     break;
                 case PATH:
                     TransactionSubsystemRootResourceDefinition.OBJECT_STORE_PATH.parseAndSetParameter(value, operation, reader);
