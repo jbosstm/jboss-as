@@ -102,4 +102,6 @@ interface CommonAttributes {
     Integer CM_BATCH_SIZE_DEF_VAL = 100;
     Boolean CM_IMMEDIATE_CLEANUP_DEF_VAL = true;
     String CM_LOCATION_NAME_DEF_VAL = "xids";
+
+    String USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER = "use-actionstatusservice-for-indoubt-transactions";
 }

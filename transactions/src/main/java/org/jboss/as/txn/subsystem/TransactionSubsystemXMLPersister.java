@@ -64,13 +64,16 @@ class TransactionSubsystemXMLPersister implements XMLElementWriter<SubsystemMars
 
         if (TransactionSubsystemRootResourceDefinition.BINDING.isMarshallable(node) ||
                 TransactionSubsystemRootResourceDefinition.STATUS_BINDING.isMarshallable(node) ||
-                TransactionSubsystemRootResourceDefinition.RECOVERY_LISTENER.isMarshallable(node)) {
+                TransactionSubsystemRootResourceDefinition.RECOVERY_LISTENER.isMarshallable(node) ||
+                TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.isMarshallable(node)) {
             writer.writeStartElement(Element.RECOVERY_ENVIRONMENT.getLocalName());
             TransactionSubsystemRootResourceDefinition.BINDING.marshallAsAttribute(node, writer);
 
             TransactionSubsystemRootResourceDefinition.STATUS_BINDING.marshallAsAttribute(node, writer);
 
             TransactionSubsystemRootResourceDefinition.RECOVERY_LISTENER.marshallAsAttribute(node, writer);
+
+            TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.marshallAsAttribute(node, writer);
 
             writer.writeEndElement();
         }

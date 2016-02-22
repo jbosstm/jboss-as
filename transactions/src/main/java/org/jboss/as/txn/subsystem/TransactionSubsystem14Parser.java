@@ -446,6 +446,9 @@ class TransactionSubsystem14Parser implements XMLStreamConstants, XMLElementRead
                 case RECOVERY_LISTENER:
                     TransactionSubsystemRootResourceDefinition.RECOVERY_LISTENER.parseAndSetParameter(value, operation, reader);
                     break;
+                case USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER:
+                    TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.parseAndSetParameter(value, operation, reader);
+                    break;
                 default:
                     throw unexpectedAttribute(reader, i);
             }

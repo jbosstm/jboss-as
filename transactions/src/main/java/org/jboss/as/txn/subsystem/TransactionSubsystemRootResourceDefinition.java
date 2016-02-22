@@ -229,6 +229,11 @@ public class TransactionSubsystemRootResourceDefinition extends SimpleResourceDe
             .setXmlName(Attribute.DROP_TABLE.getLocalName())
             .setAllowExpression(true)
             .setRequires(CommonAttributes.USE_JDBC_STORE).build();
+    public static final SimpleAttributeDefinition USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER = new SimpleAttributeDefinitionBuilder(CommonAttributes.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER, ModelType.BOOLEAN, true)
+            .setDefaultValue(new ModelNode().set(false))
+            .setFlags(AttributeAccess.Flag.RESTART_ALL_SERVICES)
+            .setXmlName(Attribute.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.getLocalName())
+            .setAllowExpression(true).build();
 
 
     private final boolean registerRuntimeOnly;
@@ -248,12 +253,12 @@ public class TransactionSubsystemRootResourceDefinition extends SimpleResourceDe
             OBJECT_STORE_RELATIVE_TO, OBJECT_STORE_PATH, JTS, USE_JOURNAL_STORE, USE_JDBC_STORE, JDBC_STORE_DATASOURCE,
             JDBC_ACTION_STORE_DROP_TABLE, JDBC_ACTION_STORE_TABLE_PREFIX, JDBC_COMMUNICATION_STORE_DROP_TABLE,
             JDBC_COMMUNICATION_STORE_TABLE_PREFIX, JDBC_STATE_STORE_DROP_TABLE, JDBC_STATE_STORE_TABLE_PREFIX,
-            JOURNAL_STORE_ENABLE_ASYNC_IO
+            JOURNAL_STORE_ENABLE_ASYNC_IO, USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER
     };
 
     static final AttributeDefinition[] ATTRIBUTES_WITH_EXPRESSIONS_AFTER_1_1_0 = new AttributeDefinition[] {
             DEFAULT_TIMEOUT, STATISTICS_ENABLED, ENABLE_STATISTICS, ENABLE_TSM_STATUS, NODE_IDENTIFIER, OBJECT_STORE_PATH, OBJECT_STORE_RELATIVE_TO,
-            PROCESS_ID_SOCKET_BINDING, PROCESS_ID_SOCKET_MAX_PORTS, RECOVERY_LISTENER, BINDING, STATUS_BINDING
+            PROCESS_ID_SOCKET_BINDING, PROCESS_ID_SOCKET_MAX_PORTS, RECOVERY_LISTENER, BINDING, STATUS_BINDING, USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER
     };
 
     static final AttributeDefinition[] ATTRIBUTES_WITH_EXPRESSIONS_AFTER_1_1_1 = new AttributeDefinition[] {

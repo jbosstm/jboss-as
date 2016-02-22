@@ -51,7 +51,8 @@ enum Attribute {
     JNDI_NAME(CommonAttributes.CM_JNDI_NAME),
     CM_TABLE_IMMEDIATE_CLEANUP(CommonAttributes.CM_IMMEDIATE_CLEANUP),
     CM_TABLE_BATCH_SIZE(CommonAttributes.CM_BATCH_SIZE),
-    NAME(CommonAttributes.CM_LOCATION_NAME)
+    NAME(CommonAttributes.CM_LOCATION_NAME),
+    USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER(CommonAttributes.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER)
     ;
     private final String name;
 
