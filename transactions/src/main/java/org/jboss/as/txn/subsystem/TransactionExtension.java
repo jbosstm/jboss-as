@@ -37,6 +37,7 @@ import org.jboss.as.controller.parsing.ExtensionParsingContext;
 import org.jboss.as.controller.registry.ManagementResourceRegistration;
 import org.jboss.as.controller.services.path.ResolvePathHandler;
 import org.jboss.as.controller.transform.description.ChainedTransformationDescriptionBuilder;
+import org.jboss.as.controller.transform.description.DiscardAttributeChecker;
 import org.jboss.as.controller.transform.description.ResourceTransformationDescriptionBuilder;
 import org.jboss.as.controller.transform.description.TransformationDescriptionBuilder;
 import org.jboss.as.txn.logging.TransactionLogger;
@@ -64,7 +65,8 @@ public class TransactionExtension implements Extension {
     static final ModelVersion MODEL_VERSION_EAP62 = ModelVersion.create(1, 3);
     static final ModelVersion MODEL_VERSION_EAP63 = ModelVersion.create(1, 4);
     static final ModelVersion MODEL_VERSION_EAP64 = ModelVersion.create(1, 5);
-    private static final ModelVersion CURRENT_MODEL_VERSION = ModelVersion.create(3, 0, 0);
+    static final ModelVersion MODEL_VERSION_WFLY10 = ModelVersion.create(3, 0);
+    private static final ModelVersion CURRENT_MODEL_VERSION = ModelVersion.create(3, 1, 0);
 
 
     private static final ServiceName MBEAN_SERVER_SERVICE_NAME = ServiceName.JBOSS.append("mbean", "server");
@@ -141,6 +143,7 @@ public class TransactionExtension implements Extension {
         context.setSubsystemXmlMapping(SUBSYSTEM_NAME, Namespace.TRANSACTIONS_1_5.getUriString(), TransactionSubsystem15Parser.INSTANCE);
         context.setSubsystemXmlMapping(SUBSYSTEM_NAME, Namespace.TRANSACTIONS_2_0.getUriString(), TransactionSubsystem20Parser.INSTANCE);
         context.setSubsystemXmlMapping(SUBSYSTEM_NAME, Namespace.TRANSACTIONS_3_0.getUriString(), TransactionSubsystem30Parser.INSTANCE);
+        context.setSubsystemXmlMapping(SUBSYSTEM_NAME, Namespace.TRANSACTIONS_3_1.getUriString(), TransactionSubsystem31Parser.INSTANCE);
     }
 
     // Transformation
@@ -152,6 +155,9 @@ public class TransactionExtension implements Extension {
      */
     private void registerTransformers(SubsystemRegistration subsystem) {
         ChainedTransformationDescriptionBuilder chainedBuilder = TransformationDescriptionBuilder.Factory.createChainedSubystemInstance(subsystem.getSubsystemVersion());
+
+        ResourceTransformationDescriptionBuilder buildWfly10 = chainedBuilder.createBuilder(subsystem.getSubsystemVersion(), MODEL_VERSION_WFLY10);
+
         /*final ModelVersion v2_0_0 = ModelVersion.create(2, 0, 0);
         ResourceTransformationDescriptionBuilder builder_2_0 = chainedBuilder.createBuilder(subsystem.getSubsystemVersion(), v2_0_0);
 
@@ -163,11 +169,12 @@ public class TransactionExtension implements Extension {
 
 
         // 2.0.0 --> 1.5.0
-        ResourceTransformationDescriptionBuilder builderEap64 = chainedBuilder.createBuilder(subsystem.getSubsystemVersion(), MODEL_VERSION_EAP64);
+        ResourceTransformationDescriptionBuilder builderEap64 = chainedBuilder.createBuilder(MODEL_VERSION_WFLY10, MODEL_VERSION_EAP64);
         builderEap64.getAttributeBuilder()
                 .addRename(TransactionSubsystemRootResourceDefinition.USE_JOURNAL_STORE, CommonAttributes.USE_HORNETQ_STORE)
                 .addRename(TransactionSubsystemRootResourceDefinition.JOURNAL_STORE_ENABLE_ASYNC_IO, CommonAttributes.HORNETQ_STORE_ENABLE_ASYNC_IO)
-                .addRename(TransactionSubsystemRootResourceDefinition.STATISTICS_ENABLED, CommonAttributes.ENABLE_STATISTICS);
+                .addRename(TransactionSubsystemRootResourceDefinition.STATISTICS_ENABLED, CommonAttributes.ENABLE_STATISTICS)
+                .setDiscard(DiscardAttributeChecker.ALWAYS, TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER);
 
         // 1.5.0 --> 1.4.0
         ResourceTransformationDescriptionBuilder builderEap63 = chainedBuilder.createBuilder(MODEL_VERSION_EAP64, MODEL_VERSION_EAP63);
@@ -177,6 +184,7 @@ public class TransactionExtension implements Extension {
         ResourceTransformationDescriptionBuilder builderEap62 = chainedBuilder.createBuilder(MODEL_VERSION_EAP63, MODEL_VERSION_EAP62);
 
         chainedBuilder.buildAndRegister(subsystem, new ModelVersion[]{
+                MODEL_VERSION_WFLY10,
                 MODEL_VERSION_EAP62,
                 MODEL_VERSION_EAP63,
                 MODEL_VERSION_EAP64,

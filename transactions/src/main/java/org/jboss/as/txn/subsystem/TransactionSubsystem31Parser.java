@@ -38,18 +38,14 @@ import org.jboss.dmr.ModelNode;
 import org.jboss.staxmapper.XMLExtendedStreamReader;
 
 /**
- * The {@link org.jboss.staxmapper.XMLElementReader} that handles the version 3.0 of Transaction subsystem xml.
+ * The {@link org.jboss.staxmapper.XMLElementReader} that handles the version 3.1 of Transaction subsystem xml.
  */
-class TransactionSubsystem30Parser extends TransactionSubsystem20Parser {
+class TransactionSubsystem31Parser extends TransactionSubsystem30Parser {
 
-    public static final TransactionSubsystem30Parser INSTANCE = new TransactionSubsystem30Parser();
+    public static final TransactionSubsystem31Parser INSTANCE = new TransactionSubsystem31Parser();
 
-    private TransactionSubsystem30Parser() {
-        super(Namespace.TRANSACTIONS_3_0);
-    }
-
-    TransactionSubsystem30Parser(Namespace validNamespace) {
-        super(validNamespace);
+    private TransactionSubsystem31Parser() {
+        super(Namespace.TRANSACTIONS_3_1);
     }
 
     @Override

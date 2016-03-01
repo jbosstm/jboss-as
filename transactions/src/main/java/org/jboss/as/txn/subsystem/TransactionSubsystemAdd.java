@@ -191,6 +191,7 @@ class TransactionSubsystemAdd extends AbstractBoottimeAddStepHandler {
         TransactionSubsystemRootResourceDefinition.BINDING.validateAndSet(operation, model);
         TransactionSubsystemRootResourceDefinition.STATUS_BINDING.validateAndSet(operation, model);
         TransactionSubsystemRootResourceDefinition.RECOVERY_LISTENER.validateAndSet(operation, model);
+        TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.validateAndSet(operation, model);
     }
 
     private void validateStoreConfig(ModelNode operation, ModelNode model) throws OperationFailedException {
@@ -425,9 +426,10 @@ class TransactionSubsystemAdd extends AbstractBoottimeAddStepHandler {
         final int coordinatorDefaultTimeout = TransactionSubsystemRootResourceDefinition.DEFAULT_TIMEOUT.resolveModelAttribute(context, coordEnvModel).asInt();
 
         final String nodeIdentifier = TransactionSubsystemRootResourceDefinition.NODE_IDENTIFIER.resolveModelAttribute(context, coordEnvModel).asString();
+        final boolean useActionStatusServiceRecoveryFilter = TransactionSubsystemRootResourceDefinition.USE_ACTIONSTATUSSERVICE_RECOVERY_FILTER.resolveModelAttribute(context, coordEnvModel).asBoolean();
 
         // install JTA environment bean service
-        final JTAEnvironmentBeanService jtaEnvironmentBeanService = new JTAEnvironmentBeanService(nodeIdentifier);
+        final JTAEnvironmentBeanService jtaEnvironmentBeanService = new JTAEnvironmentBeanService(nodeIdentifier, useActionStatusServiceRecoveryFilter);
         context.getServiceTarget().addService(TxnServices.JBOSS_TXN_JTA_ENVIRONMENT, jtaEnvironmentBeanService)
                 .setInitialMode(Mode.ACTIVE)
                 .install();
