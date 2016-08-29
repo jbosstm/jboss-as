@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.arjuna.ats.arjuna.recovery.RecoveryManager;
 import com.arjuna.ats.internal.jta.recovery.jts.JCAServerTransactionRecoveryModule;
 import org.jboss.as.network.ManagedBinding;
 import org.jboss.as.network.SocketBinding;
@@ -33,6 +34,8 @@ import org.jboss.as.network.SocketBindingManager;
 import org.jboss.as.server.suspend.SuspendController;
 import org.jboss.as.txn.logging.TransactionLogger;
 import org.jboss.as.txn.suspend.RecoverySuspendController;
+import org.jboss.jbossts.xts.initialisation.RecoveryInitialisation;
+import org.jboss.jbossts.xts.recovery.participant.ba.XTSBARecoveryManager;
 import org.jboss.msc.inject.Injector;
 import org.jboss.msc.service.Service;
 import org.jboss.msc.service.ServiceName;
@@ -40,6 +43,8 @@ import org.jboss.msc.service.StartContext;
 import org.jboss.msc.service.StartException;
 import org.jboss.msc.service.StopContext;
 import org.jboss.msc.value.InjectedValue;
+import org.jboss.narayana.compensations.internal.recovery.local.LocalParticipantRecoveryModule;
+import org.jboss.narayana.compensations.internal.recovery.remote.RemoteParticipantRecoveryModule;
 import org.omg.CORBA.ORB;
 
 import com.arjuna.ats.arjuna.common.RecoveryEnvironmentBean;
@@ -70,6 +75,9 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
     private final InjectedValue<SocketBinding> recoveryBindingInjector = new InjectedValue<SocketBinding>();
     private final InjectedValue<SocketBinding> statusBindingInjector = new InjectedValue<SocketBinding>();
     private final InjectedValue<SuspendController> suspendControllerInjector = new InjectedValue<>();
+    private final RecoveryInitialisation xtsRecoveryInitialisation = new RecoveryInitialisation();
+    private final LocalParticipantRecoveryModule localParticipantRecoveryModule = new LocalParticipantRecoveryModule();
+    private final RemoteParticipantRecoveryModule remoteParticipantRecoveryModule = new RemoteParticipantRecoveryModule();
 
     private RecoveryManagerService recoveryManagerService;
     private RecoverySuspendController recoverySuspendController;
@@ -155,11 +163,13 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
             }
         }
 
+        startCompensationsRecovery();
         recoverySuspendController = new RecoverySuspendController(recoveryManagerService);
         suspendControllerInjector.getValue().registerActivity(recoverySuspendController);
     }
 
     public synchronized void stop(StopContext context) {
+        stopCompensationsRecovery();
         suspendControllerInjector.getValue().unRegisterActivity(recoverySuspendController);
         try {
             recoveryManagerService.stop();
@@ -193,5 +203,18 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
 
     public Injector<SocketBindingManager> getBindingManager() {
         return bindingManager;
+    }
+
+    private void startCompensationsRecovery() {
+        // Recovery manager cannot instantiate this module from the name so need to instantiate it here
+        xtsRecoveryInitialisation.startup();
+        RecoveryManager.manager().addModule(localParticipantRecoveryModule);
+        XTSBARecoveryManager.getRecoveryManager().registerRecoveryModule(remoteParticipantRecoveryModule);
+    }
+
+    private void stopCompensationsRecovery() {
+        XTSBARecoveryManager.getRecoveryManager().unregisterRecoveryModule(remoteParticipantRecoveryModule);
+        RecoveryManager.manager().removeModule(localParticipantRecoveryModule, true);
+        xtsRecoveryInitialisation.shutdown();
     }
 }
