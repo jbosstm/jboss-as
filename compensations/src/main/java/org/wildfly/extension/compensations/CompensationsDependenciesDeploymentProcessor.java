@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.as.txn.subsystem;
+package org.wildfly.extension.compensations;
 
 import org.jboss.as.server.deployment.Attachments;
 import org.jboss.as.server.deployment.DeploymentPhaseContext;
@@ -32,7 +32,6 @@ import org.jboss.as.server.deployment.module.ModuleSpecification;
 import org.jboss.jandex.DotName;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
 import org.jboss.narayana.compensations.api.CancelOnFailure;
 import org.jboss.narayana.compensations.api.Compensatable;
 import org.jboss.narayana.compensations.api.CompensationScoped;
@@ -40,56 +39,42 @@ import org.jboss.narayana.compensations.api.TxCompensate;
 import org.jboss.narayana.compensations.api.TxConfirm;
 import org.jboss.narayana.compensations.api.TxLogged;
 
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="mailto:gytis@redhat.com">Gytis Trikleris</a>
  */
-public class CompensationsDependenciesDeploymentProcessor implements DeploymentUnitProcessor {
+class CompensationsDependenciesDeploymentProcessor implements DeploymentUnitProcessor {
 
     private static final ModuleIdentifier COMPENSATIONS_MODULE = ModuleIdentifier.create("org.jboss.narayana.compensations");
 
-    private static final Class<?>[] COMPENSATABLE_ANNOTATIONS = {
-            Compensatable.class,
-            CancelOnFailure.class,
-            CompensationScoped.class,
-            TxCompensate.class,
-            TxConfirm.class,
-            TxLogged.class
-    };
+    private static final List<Class<?>> ANNOTATIONS = Arrays.asList(Compensatable.class, CancelOnFailure.class,
+            CompensationScoped.class, TxCompensate.class, TxConfirm.class, TxLogged.class);
 
     @Override
     public void deploy(DeploymentPhaseContext phaseContext) throws DeploymentUnitProcessingException {
-        final DeploymentUnit unit = phaseContext.getDeploymentUnit();
-
-        final CompositeIndex compositeIndex = unit.getAttachment(Attachments.COMPOSITE_ANNOTATION_INDEX);
-        if (compositeIndex == null) {
-            return;
-        }
-
-        if (isCompensationAnnotationPresent(compositeIndex)) {
+        DeploymentUnit unit = phaseContext.getDeploymentUnit();
+        CompositeIndex compositeIndex = unit.getAttachment(Attachments.COMPOSITE_ANNOTATION_INDEX);
+        if (compositeIndex != null && isCompensationAnnotationPresent(compositeIndex)) {
             addCompensationsModuleDependency(unit);
         }
     }
 
     @Override
     public void undeploy(DeploymentUnit context) {
-
     }
 
-    private boolean isCompensationAnnotationPresent(final CompositeIndex compositeIndex) {
-        for (Class<?> annotation : COMPENSATABLE_ANNOTATIONS) {
-            if (compositeIndex.getAnnotations(DotName.createSimple(annotation.getName())).size() > 0) {
-                return true;
-            }
-        }
-
-        return false;
+    private boolean isCompensationAnnotationPresent(CompositeIndex compositeIndex) {
+        return ANNOTATIONS.stream().map(annotation -> DotName.createSimple(annotation.getName()))
+                .filter(name -> !compositeIndex.getAnnotations(name).isEmpty()).count() > 0;
     }
 
-    private void addCompensationsModuleDependency(final DeploymentUnit unit) {
-        final ModuleLoader moduleLoader = Module.getBootModuleLoader();
-        final ModuleSpecification moduleSpec = unit.getAttachment(Attachments.MODULE_SPECIFICATION);
-        moduleSpec.addSystemDependency(new ModuleDependency(moduleLoader, COMPENSATIONS_MODULE, false, false, true, false));
+    private void addCompensationsModuleDependency(DeploymentUnit unit) {
+        ModuleDependency dependency = new ModuleDependency(Module.getBootModuleLoader(), COMPENSATIONS_MODULE, false, false,
+                true, false);
+        ModuleSpecification moduleSpec = unit.getAttachment(Attachments.MODULE_SPECIFICATION);
+        moduleSpec.addSystemDependency(dependency);
     }
 
 }

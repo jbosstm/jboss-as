@@ -31,5 +31,6 @@
       <subsystem supplement="elytron">undertow.xml</subsystem>
       <subsystem>webservices.xml</subsystem>
       <subsystem>weld.xml</subsystem>
+      <subsystem>compensations.xml</subsystem>
    </subsystems>
 </config>

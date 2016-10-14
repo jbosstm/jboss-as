@@ -33,6 +33,7 @@
         <subsystem>undertow.xml</subsystem>
         <subsystem>webservices.xml</subsystem>
         <subsystem>weld.xml</subsystem>
+        <subsystem>compensations.xml</subsystem>
         <subsystem>rts.xml</subsystem>
     </subsystems>
 </config>
