@@ -312,6 +312,7 @@
         <module>rts</module>
         <module>testsuite/shared</module>
         <module>testsuite</module>
+        <module>compensations</module>
     </modules>
 
     <build>
@@ -1308,6 +1309,12 @@
             <dependency>
                 <groupId>org.wildfly</groupId>
                 <artifactId>wildfly-rts</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-compensations</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
