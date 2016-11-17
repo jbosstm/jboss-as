@@ -108,7 +108,7 @@
 
         <dependency>
             <groupId>org.jboss.narayana.jts</groupId>
-            <artifactId>narayana-jts-idlj</artifactId>
+            <artifactId>narayana-jts-idlj-j9</artifactId>
         </dependency>
 
         <dependency>

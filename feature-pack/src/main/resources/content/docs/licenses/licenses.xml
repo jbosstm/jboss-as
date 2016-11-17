@@ -2750,7 +2750,7 @@
     </dependency>
     <dependency>
       <groupId>org.jboss.narayana.jts</groupId>
-      <artifactId>narayana-jts-idlj</artifactId>
+      <artifactId>narayana-jts-idlj-j9</artifactId>
       <licenses>
         <license>
           <name>GNU Lesser General Public License, Version 2.1</name>
