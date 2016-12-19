@@ -56,5 +56,6 @@
         <module name="org.jboss.jandex"/>
         <module name="org.jboss.modules"/>
         <module name="org.jboss.narayana.compensations"/>
+        <module name="org.jboss.xts"/>
     </dependencies>
 </module>
