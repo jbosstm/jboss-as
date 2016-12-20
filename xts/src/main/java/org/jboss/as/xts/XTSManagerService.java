@@ -26,6 +26,9 @@ import org.jboss.as.xts.logging.XtsAsLogger;
 import org.jboss.jbossts.XTSService;
 import org.jboss.jbossts.xts.environment.WSCEnvironmentBean;
 import org.jboss.jbossts.xts.environment.XTSPropertyManager;
+import org.jboss.jbossts.xts.initialisation.ClientSideInitialisation;
+import org.jboss.jbossts.xts.initialisation.CoordinatorSideInitialisation;
+import org.jboss.jbossts.xts.initialisation.ParticipantSideInitialisation;
 import org.jboss.msc.service.AbstractService;
 import org.jboss.msc.service.StartContext;
 import org.jboss.msc.service.StartException;
@@ -34,12 +37,20 @@ import org.jboss.msc.value.InjectedValue;
 import org.jboss.wsf.spi.management.ServerConfig;
 import org.wildfly.security.manager.WildFlySecurityManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Main XTS service
  *
  * @author <a href="mailto:adinn@redhat.com">Andrew Dinn</a>
  */
 public class XTSManagerService extends AbstractService<XTSService> {
+
+    // Recovery should be initialised by transactions subsystem so here only initialising coordinator, participant, and client
+    private static final List<String> INITIALISATIONS = Arrays.asList(CoordinatorSideInitialisation.class.getName(),
+            ParticipantSideInitialisation.class.getName(), ClientSideInitialisation.class.getName());
+
     private final String coordinatorURL;
     private volatile org.jboss.jbossts.XTSService xtsService;
     private InjectedValue<ServerConfig> wsServerConfig = new InjectedValue<ServerConfig>();
@@ -76,6 +87,8 @@ public class XTSManagerService extends AbstractService<XTSService> {
             wscEnVBean.setBindAddress11(serverConfigValue.getWebServiceHost());
             wscEnVBean.setBindPort11(serverConfigValue.getWebServicePort());
             wscEnVBean.setBindPortSecure11(serverConfigValue.getWebServiceSecurePort());
+
+            XTSPropertyManager.getXTSEnvironmentBean().setXtsInitialisations(INITIALISATIONS);
 
             XTSService service = new XTSService();
             try {
