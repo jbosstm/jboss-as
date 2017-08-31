@@ -250,4 +250,8 @@ public interface TransactionLogger extends BasicLogger {
     @Message(id = 38, value = "Unexpected error on suspending transaction for work %s")
     RuntimeException cannotSuspendInflowTransactionUnexpectedError(Work txn, @Cause Exception e);
 
+    @LogMessage(level = WARN)
+    @Message(id = 39, value = "Can't stop recovery manager service %s")
+    void cannotStopRecoveryManagerService(com.arjuna.ats.jbossatx.jta.RecoveryManagerService recoveryService, @Cause Exception e);
+
 }

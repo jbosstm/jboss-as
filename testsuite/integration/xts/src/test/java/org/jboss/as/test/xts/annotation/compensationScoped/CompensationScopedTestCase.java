@@ -28,6 +28,7 @@ import org.jboss.narayana.compensations.internal.BAController;
 import org.jboss.narayana.compensations.internal.BAControllerFactory;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.narayana.compensations.internal.CurrentTransaction;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,7 +76,7 @@ public class CompensationScopedTestCase {
 
         baController.beginBusinessActivity();
         updateValue(firstTransactionData);
-        final Object firstTransactionContext = baController.suspend();
+        final CurrentTransaction firstTransactionContext = baController.suspend();
 
         baController.beginBusinessActivity();
         updateValue(secondTransactionData);

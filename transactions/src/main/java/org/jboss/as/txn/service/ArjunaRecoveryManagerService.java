@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.arjuna.ats.arjuna.recovery.RecoveryManager;
 import com.arjuna.ats.internal.jta.recovery.jts.JCAServerTransactionRecoveryModule;
 import org.jboss.as.network.ManagedBinding;
 import org.jboss.as.network.SocketBinding;
@@ -40,6 +41,7 @@ import org.jboss.msc.service.StartContext;
 import org.jboss.msc.service.StartException;
 import org.jboss.msc.service.StopContext;
 import org.jboss.msc.value.InjectedValue;
+import org.jboss.narayana.compensations.internal.recovery.local.LocalParticipantRecoveryModule;
 import org.omg.CORBA.ORB;
 
 import com.arjuna.ats.arjuna.common.RecoveryEnvironmentBean;
@@ -70,6 +72,7 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
     private final InjectedValue<SocketBinding> recoveryBindingInjector = new InjectedValue<SocketBinding>();
     private final InjectedValue<SocketBinding> statusBindingInjector = new InjectedValue<SocketBinding>();
     private final InjectedValue<SuspendController> suspendControllerInjector = new InjectedValue<>();
+    private final LocalParticipantRecoveryModule localParticipantRecoveryModule = new LocalParticipantRecoveryModule();
 
     private RecoveryManagerService recoveryManagerService;
     private RecoverySuspendController recoverySuspendController;
@@ -155,16 +158,18 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
             }
         }
 
+        startCompensationsLocalRecovery();
         recoverySuspendController = new RecoverySuspendController(recoveryManagerService);
         suspendControllerInjector.getValue().registerActivity(recoverySuspendController);
     }
 
     public synchronized void stop(StopContext context) {
+        stopCompensationsLocalRecovery();
         suspendControllerInjector.getValue().unRegisterActivity(recoverySuspendController);
         try {
             recoveryManagerService.stop();
         } catch (Exception e) {
-            // todo log
+            TransactionLogger.ROOT_LOGGER.cannotStopRecoveryManagerService(recoveryManagerService, e);
         }
         recoveryManagerService.destroy();
         recoveryManagerService = null;
@@ -193,5 +198,20 @@ public class ArjunaRecoveryManagerService implements Service<RecoveryManagerServ
 
     public Injector<SocketBindingManager> getBindingManager() {
         return bindingManager;
+    }
+
+    /**
+     * Starting local compensation recovery module. There is the remote compensation recovery module too
+     * but it works with WS-BA communication and it needs XTS subsystem for its work
+     * thus leaving that initialization for the XTS.
+     *
+     * See org.jboss.as.xts.XTSManagerService
+     */
+    private void startCompensationsLocalRecovery() {
+        RecoveryManager.manager().addModule(localParticipantRecoveryModule);
+    }
+
+    private void stopCompensationsLocalRecovery() {
+        RecoveryManager.manager().removeModule(localParticipantRecoveryModule, false);
     }
 }
