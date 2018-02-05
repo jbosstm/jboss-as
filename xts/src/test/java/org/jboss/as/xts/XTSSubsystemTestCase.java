@@ -52,7 +52,7 @@ public class XTSSubsystemTestCase extends AbstractSubsystemBaseTest {
 
     @Override
     protected String getSubsystemXsdPath() throws Exception {
-        return "schema/jboss-as-xts_2_0.xsd";
+        return "schema/jboss-as-xts_2_1.xsd";
     }
 
     @Override
@@ -83,6 +83,11 @@ public class XTSSubsystemTestCase extends AbstractSubsystemBaseTest {
         testBoot1_1_0(ModelTestControllerVersion.EAP_6_4_0);
     }
 
+    @Test
+    public void testBootEAP710() throws Exception {
+        testBoot1_1_0(ModelTestControllerVersion.EAP_7_1_0);
+    }
+
 
     private void testBoot1_1_0(ModelTestControllerVersion controllerVersion) throws Exception {
 
@@ -102,6 +107,7 @@ public class XTSSubsystemTestCase extends AbstractSubsystemBaseTest {
                         if (name.equals(ModelDescriptionConstants.ADD) && addr.size() == 1 && addr.getElement(0).equals(XTSExtension.SUBSYSTEM_PATH)) {
                             operation.get(ModelDescriptionConstants.HOST).set("default-host");
                             operation.get(XTSSubsystemDefinition.DEFAULT_CONTEXT_PROPAGATION.getName()).set(false);
+                            operation.get(XTSSubsystemDefinition.ASYNC_REGISTRATION.getName()).set(false);
                         }
                         return operation;
                     }
