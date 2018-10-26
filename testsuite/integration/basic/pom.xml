@@ -278,6 +278,11 @@
                                     <additionalClasspathElements>
                                         <additionalClasspathElement>${project.basedir}/../src/test/resources</additionalClasspathElement>
                                     </additionalClasspathElements>
+                                    <excludes>
+                                      <exclude>**/LdapExtLikeAdvancedLdapLMTestCase.java</exclude>
+                                      <exclude>**/LdapExtLoginModuleTestCase.java</exclude>
+                                      <exclude>**/LdapLoginModuleTestCase.java</exclude>
+                                    </excludes>
                                 </configuration>
                             </execution>
 
