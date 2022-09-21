@@ -43,6 +43,18 @@
         <transformer-input-dir>${project.basedir}/../../../transactions</transformer-input-dir>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${ee.maven.groupId}</groupId>
+                <artifactId>wildfly-standard-ee-bom</artifactId>
+                <version>${ee.maven.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
 
         <!-- Jakarta-namespace specific deps -->
@@ -61,11 +73,12 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.jts</groupId>
-            <artifactId>narayana-jts-integration-jakarta</artifactId>
+            <artifactId>narayana-jts-integration</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.narayana.jts</groupId>
-            <artifactId>narayana-jts-idlj-jakarta</artifactId>
+            <artifactId>narayana-jts-idlj</artifactId>
+            <version>${version.org.jboss.narayana}</version>
         </dependency>
         <dependency>
             <groupId>org.wildfly.transaction</groupId>
