@@ -2020,8 +2020,6 @@
                 <!-- TODO once moved to jakarta.* move to main module set-->
                 <module>jsf</module>
                 <!-- TODO once moved to jakarta.* move to main module set-->
-                <module>messaging-activemq</module>
-                <!-- TODO once moved to jakarta.* move to main module set-->
                 <module>observability</module>
                 <!-- TODO once moved to jakarta.* move to main module set-->
                 <module>undertow</module>
