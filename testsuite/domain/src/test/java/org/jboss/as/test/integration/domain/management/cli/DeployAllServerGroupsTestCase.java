@@ -29,7 +29,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
 import org.jboss.as.test.shared.TimeoutUtil;
 
 import org.jboss.as.test.integration.common.HttpRequest;
