@@ -21,6 +21,17 @@
  */
 package org.jboss.as.test.integration.ws.wsse.trust;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.util.StringTokenizer;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
@@ -55,17 +66,8 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 
-import javax.xml.namespace.QName;
 import jakarta.xml.ws.BindingProvider;
 import jakarta.xml.ws.Service;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.util.StringTokenizer;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * WS-Trust test case
@@ -292,12 +294,16 @@ public class WSTrustTestCase {
             final QName serviceName = new QName("http://www.jboss.org/jbossws/ws-extensions/wssecuritypolicy", "SecurityService");
             final URL wsdlURL = new URL(serviceURL + "SecurityService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
+
             ServiceIface proxy = (ServiceIface) service.getPort(ServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             final QName stsServiceName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "SecurityTokenService");
             final QName stsPortName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "UT_Port");
             URL stsURL = new URL(serviceURL.getProtocol(), serviceURL.getHost(), serviceURL.getPort(), "/jaxws-samples-wsse-policy-trust-sts/SecurityTokenService?wsdl");
             WSTrustTestUtils.setupWsseAndSTSClient(proxy, bus, stsURL.toString(), stsServiceName, stsPortName);
+
 
             try {
                 assertEquals("WS-Trust Hello World!", proxy.sayHello());
@@ -328,6 +334,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL(serviceURL + "SecurityService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             ServiceIface proxy = (ServiceIface) service.getPort(ServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             WSTrustTestUtils.setupWsse(proxy, bus);
 
@@ -359,6 +367,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL(serviceURL + "SecurityService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             ServiceIface proxy = (ServiceIface) service.getPort(ServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             final QName stsServiceName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "SecurityTokenService");
             final QName stsPortName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "UT_Port");
@@ -390,6 +400,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL(serviceURL + "SecurityService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             ServiceIface proxy = (ServiceIface) service.getPort(ServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             final QName stsServiceName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "SecurityTokenService");
             final QName stsPortName = new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/", "UT_Port");
@@ -420,6 +432,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL(serviceURL + "ActAsService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             ActAsServiceIface proxy = (ActAsServiceIface) service.getPort(ActAsServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             WSTrustTestUtils.setupWsseAndSTSClientActAs((BindingProvider) proxy, bus);
 
@@ -447,6 +461,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL(serviceURL + "OnBehalfOfService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             OnBehalfOfServiceIface proxy = (OnBehalfOfServiceIface) service.getPort(OnBehalfOfServiceIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             WSTrustTestUtils.setupWsseAndSTSClientOnBehalfOf((BindingProvider) proxy, bus);
 
@@ -471,6 +487,8 @@ public class WSTrustTestCase {
             final URL wsdlURL = new URL("https", serviceURL.getHost(), serviceURL.getPort() - 8080 + 8444, "/jaxws-samples-wsse-policy-trust-holderofkey/HolderOfKeyService?wsdl");
             Service service = Service.create(wsdlURL, serviceName);
             HolderOfKeyIface proxy = (HolderOfKeyIface) service.getPort(HolderOfKeyIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             WSTrustTestUtils.setupWsseAndSTSClientHolderOfKey((BindingProvider) proxy, bus);
             assertEquals("Holder-Of-Key WS-Trust Hello World!", proxy.sayHello());
@@ -492,6 +510,8 @@ public class WSTrustTestCase {
             final QName serviceName = new QName("http://www.jboss.org/jbossws/ws-extensions/bearerwssecuritypolicy", "BearerService");
             Service service = Service.create(new URL(serviceURL + "BearerService?wsdl"), serviceName);
             BearerIface proxy = (BearerIface) service.getPort(BearerIface.class);
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.connectionTimeout", "6000");
+            ((BindingProvider) proxy).getRequestContext().put("jakarta.xml.ws.client.receiveTimeout", "1000");
 
             WSTrustTestUtils.setupWsseAndSTSClientBearer((BindingProvider) proxy, bus);
             assertEquals("Bearer WS-Trust Hello World!", proxy.sayHello());
