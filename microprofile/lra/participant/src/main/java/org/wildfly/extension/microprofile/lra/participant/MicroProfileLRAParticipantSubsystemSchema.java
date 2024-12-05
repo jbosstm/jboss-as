@@ -17,7 +17,6 @@ import static org.jboss.as.controller.PersistentResourceXMLDescription.builder;
  * @author Paul Ferraro
  */
 enum MicroProfileLRAParticipantSubsystemSchema implements PersistentSubsystemSchema<MicroProfileLRAParticipantSubsystemSchema> {
-    VERSION_2_0(2),
     VERSION_1_0(1),
     ;
     private final VersionedNamespace<IntVersion, MicroProfileLRAParticipantSubsystemSchema> namespace;
