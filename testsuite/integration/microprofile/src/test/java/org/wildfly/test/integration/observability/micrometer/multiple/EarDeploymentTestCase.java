@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource1;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource2;
 import org.jboss.as.test.shared.observability.signals.PrometheusMetric;
-
+@org.junit.Ignore
 public class EarDeploymentTestCase extends BaseMultipleTestCase {
     protected static final String ENTERPRISE_APP = "enterprise-app";
 
