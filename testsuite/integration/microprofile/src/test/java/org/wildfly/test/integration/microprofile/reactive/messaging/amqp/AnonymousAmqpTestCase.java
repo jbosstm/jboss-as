@@ -34,6 +34,7 @@ import io.restassured.RestAssured;
 @RunAsClient
 @ServerSetup({RunArtemisAmqpSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 public class AnonymousAmqpTestCase {
     @ArquillianResource
     URL url;

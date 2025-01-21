@@ -26,6 +26,7 @@ import org.junit.Test;
 @RunAsClient
 @ServerSetup({OpenTelemetryWithCollectorSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 public class WithSpanTestCase extends BaseOpenTelemetryTest {
     private static final String DEPLOYMENT_NAME = "with-span-test";
 

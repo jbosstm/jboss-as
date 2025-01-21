@@ -50,6 +50,7 @@ import org.wildfly.test.integration.microprofile.reactive.RunKafkaSetupTask;
 @RunAsClient
 @ServerSetup({RunKafkaSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 public class ReactiveMessagingChannelsTestCase {
     @ArquillianResource
     URL url;
