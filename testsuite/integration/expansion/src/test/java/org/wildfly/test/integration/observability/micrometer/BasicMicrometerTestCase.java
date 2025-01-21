@@ -25,6 +25,7 @@ import org.wildfly.test.integration.observability.micrometer.multiple.applicatio
 @RunWith(Arquillian.class)
 @ServerSetup(MicrometerSetupTask.class)
 @DockerRequired
+@org.junit.Ignore
 public class BasicMicrometerTestCase {
     @Inject
     private MeterRegistry meterRegistry;

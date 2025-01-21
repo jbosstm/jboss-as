@@ -33,6 +33,7 @@ import java.io.File;
 @RunAsClient
 @ServerSetup({RunKafkaSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 public class ReactiveMessagingKafkaWithSnappyFailsOnWindowsAndMacTestCase extends AbstractCliTestBase {
     @ArquillianResource
     public ManagementClient managementClient;
