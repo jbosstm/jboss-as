@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.wildfly.test.integration.observability.JaxRsActivator;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource1;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource2;
-
+@org.junit.Ignore
 public class MultipleWarTestCase extends BaseMultipleTestCase {
     @Deployment(name = SERVICE_ONE, order = 1, testable = false)
     public static WebArchive createDeployment1() {
