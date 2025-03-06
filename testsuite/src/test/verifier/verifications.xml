@@ -1,5 +1,0 @@
-<verifications>
-    <files>
-        <location>${jboss.home}</location>
-    </files>
-</verifications>
