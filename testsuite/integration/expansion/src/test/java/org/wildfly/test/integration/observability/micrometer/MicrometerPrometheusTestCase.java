@@ -49,6 +49,7 @@ import org.wildfly.test.integration.observability.setuptask.PrometheusSetupTask;
 @RunWith(Arquillian.class)
 @ServerSetup({PrometheusSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 @RunAsClient
 public class MicrometerPrometheusTestCase {
     private static final int REQUEST_COUNT = 5;

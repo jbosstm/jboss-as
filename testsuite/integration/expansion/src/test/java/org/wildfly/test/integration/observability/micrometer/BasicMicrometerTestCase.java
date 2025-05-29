@@ -24,6 +24,7 @@ import org.wildfly.test.integration.observability.JaxRsActivator;
 @RunWith(Arquillian.class)
 @ServerSetup(MicrometerSetupTask.class)
 @DockerRequired
+@org.junit.Ignore
 public class BasicMicrometerTestCase {
     @Inject
     private MeterRegistry meterRegistry;

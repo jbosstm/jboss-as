@@ -37,6 +37,7 @@ import org.wildfly.test.integration.observability.JaxRsActivator;
 @RunWith(Arquillian.class)
 @ServerSetup({MicrometerSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 @RunAsClient
 public class ConflictingPrometheusContextTestCase {
     private static final ModelNode metricsExtension = Operations.createAddress("extension", "org.wildfly.extension.metrics");

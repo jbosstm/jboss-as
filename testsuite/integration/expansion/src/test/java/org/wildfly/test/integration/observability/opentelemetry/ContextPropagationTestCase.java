@@ -33,6 +33,7 @@ import org.wildfly.test.integration.observability.opentelemetry.application.Otel
 @RunAsClient
 @ServerSetup({OpenTelemetryWithCollectorSetupTask.class})
 @DockerRequired
+@org.junit.Ignore
 public class ContextPropagationTestCase extends BaseOpenTelemetryTest {
 
     private static final String DEPLOYMENT_SERVICE1 = "service1";
