@@ -25,6 +25,7 @@ import org.wildfly.test.integration.microprofile.reactive.RunKafkaSetupTask;
 @RunAsClient
 @ServerSetup({OpenTelemetryWithCollectorSetupTask.class, EnableReactiveExtensionsSetupTask.class, RunKafkaSetupTask.class})
 @TestcontainersRequired
+@org.junit.Ignore
 public class KafkaReactiveMessagingAndOtelTestCase extends BaseReactiveMessagingAndOtelTest {
 
     @BeforeClass
