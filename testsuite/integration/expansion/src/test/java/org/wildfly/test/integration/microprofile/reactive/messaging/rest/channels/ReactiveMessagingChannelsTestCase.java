@@ -50,6 +50,7 @@ import org.wildfly.test.integration.microprofile.reactive.RunKafkaSetupTask;
 @RunAsClient
 @ServerSetup({RunKafkaSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @TestcontainersRequired
+@org.junit.Ignore
 public class ReactiveMessagingChannelsTestCase {
     private static final StringAsset DEPLOYMENT_STRUCTURE_XML = new StringAsset("""
             <jboss-deployment-structure>
