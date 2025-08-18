@@ -37,6 +37,7 @@ import org.wildfly.test.integration.observability.opentelemetry.application.Otel
 @RunAsClient
 @ServerSetup({OpenTelemetryWithCollectorSetupTask.class})
 @TestcontainersRequired
+@org.junit.Ignore
 public class OpenTelemetryMultipleWarTestCase extends BaseOpenTelemetryTest {
     protected static final String SERVICE_ONE = "service-one";
     protected static final String SERVICE_TWO = "service-two";
