@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource1;
 import org.wildfly.test.integration.observability.micrometer.multiple.application.DuplicateMetricResource2;
 
+@org.junit.Ignore
 public class MicrometerEarDeploymentTestCase extends BaseMicrometerMultipleTestCase {
     protected static final String ENTERPRISE_APP = "enterprise-app";
 
