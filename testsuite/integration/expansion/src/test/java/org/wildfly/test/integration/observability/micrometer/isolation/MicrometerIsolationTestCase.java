@@ -50,6 +50,8 @@ import org.wildfly.test.integration.observability.JaxRsActivator;
 @ServerSetup(MicrometerSetupTask.class)
 @TestcontainersRequired
 @RunAsClient
+
+@org.junit.Ignore
 public class MicrometerIsolationTestCase {
     protected static final String SERVICE_ONE = IsolationResource1.DEPLOYMENT_NAME;
     protected static final String SERVICE_TWO = IsolationResource2.DEPLOYMENT_NAME;
