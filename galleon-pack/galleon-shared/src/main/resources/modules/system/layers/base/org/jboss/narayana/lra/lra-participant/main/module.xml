@@ -24,6 +24,8 @@
     <module name="org.jboss.narayana.lra.lra-service-base" />
 
     <!-- lra-client -->
+<!--     org.eclipse.microprofile.restclient stands for microprofile-rest-client-api -->
+    <module name="org.eclipse.microprofile.restclient"/>
     <module name="jakarta.enterprise.api"/>
     <!-- lra-proxy-api -->
     <module name="io.smallrye.jandex"/>
