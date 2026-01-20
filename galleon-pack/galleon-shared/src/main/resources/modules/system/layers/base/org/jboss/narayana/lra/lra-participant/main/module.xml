@@ -26,6 +26,7 @@
     <!-- lra-client -->
 <!--     org.eclipse.microprofile.restclient stands for microprofile-rest-client-api -->
     <module name="org.eclipse.microprofile.restclient"/>
+    <module name="org.jboss.resteasy.resteasy-client-microprofile"/>
     <module name="jakarta.enterprise.api"/>
     <!-- lra-proxy-api -->
     <module name="io.smallrye.jandex"/>
