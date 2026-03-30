@@ -61,7 +61,6 @@ import org.wildfly.test.integration.microprofile.reactive.messaging.multiple.dep
 @RunAsClient
 @ServerSetup({RunKafkaSetupTask.class, RunArtemisAmqpSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @TestcontainersRequired
-@org.junit.Ignore
 public class MultiDeploymentReactiveMessagingTestCase extends AbstractCliTestBase {
 
     private static final String BASE_NAME = "multideployment-rm";

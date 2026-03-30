@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 @ServerSetup(MicrometerSetupTask.class)
 @TestcontainersRequired
-@org.junit.Ignore
 public class FaultToleranceMicrometerIntegrationTestCase extends AbstractFaultToleranceMicrometerIntegrationTestCase {
 
     public FaultToleranceMicrometerIntegrationTestCase() {

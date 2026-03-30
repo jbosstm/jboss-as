@@ -37,7 +37,6 @@ import org.wildfly.test.integration.observability.JaxRsActivator;
 @ServerSetup(MicrometerSetupTask.class)
 @TestcontainersRequired
 @RunAsClient
-@org.junit.Ignore
 public class MicrometerOtelIntegrationTestCase {
     public static final int REQUEST_COUNT = 5;
     public static final String DEPLOYMENT_NAME = "micrometer-test.war";

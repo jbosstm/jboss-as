@@ -36,7 +36,6 @@ import org.wildfly.test.integration.microprofile.reactive.EnableReactiveExtensio
 @RunWith(Arquillian.class)
 @ServerSetup({RunKafkaWithSslSetupTask.class, EnableReactiveExtensionsSetupTask.class, ConfigureElytronSslContextSetupTask.class})
 @TestcontainersRequired
-@org.junit.Ignore
 public class ReactiveMessagingKafkaSslConfiguredGloballyTestCase {
 
     private static final long TIMEOUT = TimeoutUtil.adjust(15000);

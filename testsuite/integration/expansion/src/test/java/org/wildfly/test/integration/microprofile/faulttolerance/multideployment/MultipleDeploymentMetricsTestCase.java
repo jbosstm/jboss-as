@@ -38,7 +38,6 @@ import org.wildfly.test.integration.microprofile.faulttolerance.micrometer.deplo
 @RunAsClient
 @ServerSetup(MicrometerSetupTask.class)
 @TestcontainersRequired
-@org.junit.Ignore
 public class MultipleDeploymentMetricsTestCase {
 
     public static final String DEPLOYMENT_1 = "deployment-1";

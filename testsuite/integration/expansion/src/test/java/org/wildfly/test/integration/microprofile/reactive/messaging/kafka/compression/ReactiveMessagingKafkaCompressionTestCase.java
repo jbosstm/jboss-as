@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 @RunWith(Arquillian.class)
 @ServerSetup({RunKafkaSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @TestcontainersRequired
-@org.junit.Ignore
 public class ReactiveMessagingKafkaCompressionTestCase {
 
     // Downstream we want to disable Snappy on Windows and Mac
