@@ -17,7 +17,6 @@ import org.wildfly.test.integration.microprofile.reactive.EnableReactiveExtensio
 @RunWith(Arquillian.class)
 @RunAsClient
 @ServerSetup({SnapshotRestoreSetupTask.class, EnableReactiveExtensionsSetupTask.class})
-@org.junit.Ignore
 public class KafkaReactiveMessagingAndOtelConfigTestCase extends BaseReactiveMessagingAndOtelConfigTest {
 
     public KafkaReactiveMessagingAndOtelConfigTestCase() {
