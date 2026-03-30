@@ -56,6 +56,7 @@
 name: Build and Test WildFly
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       test-arguments:
