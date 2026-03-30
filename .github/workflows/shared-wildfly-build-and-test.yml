@@ -57,6 +57,42 @@ name: Build and Test WildFly
 
 on:
   workflow_dispatch:
+    inputs:
+      test-arguments:
+        description: "Test arguments"
+        required: false
+        default: ""
+        type: string
+      build-arguments:
+        description: "Build arguments"
+        required: true
+        type: string
+      maven-repo-path:
+        description: "Maven repo path to extract to local cache"
+        required: true
+        type: string
+      maven-repo-name:
+        description: "Maven repo name to extract to local cache"
+        required: true
+        type: string
+      java-versions:
+        description: "JDK versions array"
+        required: true
+        type: string
+      os:
+        description: "OS array"
+        required: true
+        type: string
+      ref:
+        description: "WildFly ref"
+        required: false
+        default: ""
+        type: string
+      id:
+        description: "An id to identify the uploaded artifacts"
+        required: false
+        default: "default"
+        type: string
   workflow_call:
     inputs:
       test-arguments:
