@@ -17,7 +17,6 @@ import org.wildfly.test.integration.microprofile.reactive.RunKafkaSetupTask;
 @RunAsClient
 @ServerSetup({RunKafkaSetupTask.class, EnableReactiveExtensionsSetupTask.class})
 @TestcontainersRequired
-@org.junit.Ignore
 public class ReactiveMessagingKafkaWithZstdFailsOnWindowsAndMacTestCase extends AbstractReactiveMessagingKafkaWithNativeCompressionFailsOnWindowsAndMacTestCase {
     public ReactiveMessagingKafkaWithZstdFailsOnWindowsAndMacTestCase() {
         super("microprofile-config-zstd.properties");
