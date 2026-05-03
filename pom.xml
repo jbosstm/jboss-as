@@ -1604,7 +1604,7 @@
                 <module>client/properties</module>
                 <module>client/shade</module>
                 <module>clustering</module>
-                <module>concurrency/impl-30</module>
+                <module>concurrency/impl-31</module>
                 <module>concurrency/spi</module>
                 <module>connector</module>
                 <module>datasources-agroal</module>
@@ -1702,6 +1702,7 @@
             <modules>
                 <module>boms/legacy-ee</module>
                 <module>boms/legacy-test</module>
+                <module>concurrency/impl-30</module>
                 <module>legacy/ee-feature-pack</module>
                 <module>legacy/channel</module>
             </modules>
@@ -1719,7 +1720,6 @@
                 <module>boms/preview-test</module>
                 <module>boms/preview-expansion</module>
                 <module>boms/preview-test-expansion</module>
-                <module>concurrency/impl-31</module>
                 <module>preview</module>
             </modules>
         </profile>
