@@ -44,6 +44,9 @@
         <module name="org.jboss.jboss-transaction-spi"/>
         <module name="jakarta.resource.api"/>
         <module name="org.apache.activemq.artemis.journal" optional="true"/>
+        <module name="org.infinispan" optional="true"/>
+        <module name="org.infinispan.core" optional="true"/>
+        <module name="org.infinispan.commons" optional="true"/>
         <module name="javax.orb.api"/>
         <module name="jakarta.enterprise.api"/>
         <module name="org.jboss.weld.core"/>
