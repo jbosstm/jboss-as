@@ -1319,6 +1319,17 @@
             </dependency>
             <dependency>
                 <groupId>org.jboss.narayana.lra</groupId>
+                <artifactId>lra-coordinator-ha-infinispan</artifactId>
+                <version>${version.org.jboss.narayana.lra}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.narayana.lra</groupId>
                 <artifactId>lra-coordinator-jar</artifactId>
                 <version>${version.org.jboss.narayana.lra}</version>
                 <exclusions>
