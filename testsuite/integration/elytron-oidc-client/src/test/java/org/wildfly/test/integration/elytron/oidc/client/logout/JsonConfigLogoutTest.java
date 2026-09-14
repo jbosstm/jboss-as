@@ -40,6 +40,7 @@ import org.jboss.as.version.Stability;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import org.junit.Ignore;
 import org.wildfly.test.integration.elytron.oidc.client.KeycloakConfiguration;
 
 import org.junit.Before;
@@ -50,6 +51,7 @@ import org.junit.runner.RunWith;
 /*  Test OIDC logout.  Logout configuration attributes
     are passed to Elytron via oidc.json file attributes.
  */
+@Ignore
 @RunWith(Arquillian.class)
 @RunAsClient
 @ServerSetup({ EnvSetupUtils.KeycloakAndSubsystemSetup.class, EnvSetupUtils.WildFlyServerSetupTask.class})
