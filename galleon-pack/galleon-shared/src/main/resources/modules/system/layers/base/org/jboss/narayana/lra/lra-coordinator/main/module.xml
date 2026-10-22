@@ -29,6 +29,7 @@
     <module name="org.eclipse.microprofile.jwt.auth.api" optional="true"/>
     <module name="io.smallrye.fault-tolerance"/>
     <module name="io.smallrye.config" optional="true"/>
+    <module name="org.jboss.narayana.lra.lra-coordinator-ha-infinispan" optional="true"/>
 
     <!-- Loading JAX-RS dependencies for LRA recovery coordinator to be able to do JAX-RS remote calls -->
     <module name="org.jboss.resteasy.resteasy-jaxrs" services="export"/>

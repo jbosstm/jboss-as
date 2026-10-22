@@ -471,6 +471,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.narayana.lra</groupId>
+            <artifactId>lra-coordinator-ha-infinispan</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.resteasy.microprofile</groupId>
             <artifactId>microprofile-config</artifactId>
         </dependency>
